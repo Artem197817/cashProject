@@ -4,7 +4,13 @@ import {Router} from "./router.js";
 class App{
 
     constructor(){
-        new Router();
+      this.router =  new Router();
+        window.addEventListener('DOMContentLoaded', () => {
+            this.router.openRoute();
+        });
+        window.addEventListener('popstate', () => {
+            this.router.openRoute();
+        });
     }
 }
 (new App());
