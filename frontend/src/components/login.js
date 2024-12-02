@@ -48,19 +48,15 @@ export class Login {
                     rememberMe: this.rememberMeElement.checked
                 })
 
-                       // const result = await response.json();
 
-            if (result.error ||!result.response ||(result.response && !result.response.accessToken
-                || !result.response.refreshToken || !result.response.id || !result.response.name)) {
+
+            if (result.error ||!result.response ||(result.response && !result.response.tokens.accessToken
+                || !result.response.tokens.refreshToken || !result.response.user)) {
                 this.commonErrorElement.style.display = 'block';
                 return
             }
 
-            AuthUtil.setAuthInfo(result.response.accessToken, result.response.refreshToken,
-                {
-                    id: result.response.id,
-                    name: result.response.name
-                });
+            AuthUtil.setAuthInfo(result.response.tokens.accessToken, result.response.tokens.refreshToken, result.response.user);
 
 
             window.location.href = "#/";

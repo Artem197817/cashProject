@@ -1,9 +1,10 @@
 import {Dashboard} from "./components/dashboard";
 import {Login} from "./components/login";
 import {SignUp} from "./components/sign-up";
-import {FreelancersList} from "./components/freelancers/freelancers-list";
+import {FreelancersList} from "./components/income/freelancers-list";
 import {Logout} from "./components/logout";
 import {AuthUtil} from "./utils/auth-util";
+import {Income} from "./components/income/income";
 
 export class Router {
 
@@ -67,7 +68,7 @@ export class Router {
                 useSecondLayout: false,
                 load: () => {
 
-                    new SignUp(this.openNewRoute.bind(this));
+                    new SignUp();
                 },
                 unload: () => {
                     document.body.classList.remove('register-page');
@@ -80,19 +81,28 @@ export class Router {
             {
             route: '#/logout',
                 load: () => {
-                new Logout(this.openNewRoute.bind(this));
+                new Logout();
                 }
             },
-            // {
-            //     route: '/freelancers',
-            //     title: 'freelancers',
-            //     template: '/templates/pages/freelancers/list.html',
-            //     useLayout: '/templates/layout.html',
-            //     load: () => {
-            //         new FreelancersList();
-            //     }
-            //
-            // },
+            {
+                route: '#/income',
+                title: 'Доходы',
+                template: '/templates/pages/finance.html',
+                useLayout: '/templates/layout.html',
+                useSecondLayout: false,
+                requiresAuth: true,
+                load: () => {
+
+                    new Income();
+                },
+                unload: () => {
+
+                },
+                styles: [
+                    'finance.css'
+                ]
+            },
+
         ];
     }
     async openRoute() {

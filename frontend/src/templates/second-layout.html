@@ -1,48 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="finance.css">
-</head>
-<body>
-    <div class="content-container p-0 p-sm-3 m-3 m-sm-4">
-        <h1 class="page-title mb-5 mt-5" id="page-title">Доходы</h1>
-        <div class="buttons-block-finance" id="btn-block-fin">
-            <button class="btn btn-success" id="create income">Создать доход</button>
-            <button class="btn btn-danger" id="create expense">Создать расход</button>
-         </div>
-         <div class="buttons-block-main d-flex align-items-center gap-3">
-            <button type="button" class="btn btn-outline-secondary" id="btn-today">Сегодня</button>    
-            <button type="button" class="btn btn-outline-secondary" id="btn-week">Неделя</button>   
-            <button type="button" class="btn btn-outline-secondary" id="btn-month">Месяц</button>   
-            <button type="button" class="btn btn-outline-secondary" id="year">Год</button>   
-            <button type="button" class="btn btn-outline-secondary" id="interval">Интервал</button> 
-            <div class="interval">
-                <span>c</span>
-                <a href="javascript:void(0)" class="link-interval-start" id="link-interval-start">День</a>
-                <span>по</span>
-                <a href="javascript:void(0)" class="link-interval-end" id="link-interval-end">День</a>
-            </div>  
-         </div>
-                <div id="main-content"></div>
-        </div>
+<div class="content-container p-0 p-sm-3 m-3 m-sm-4">
+    <h1 class="page-title mb-5 mt-5" id="page-title">Доходы</h1>
+    <div class="buttons-block-finance" id="btn-block-fin">
+        <button class="btn btn-success" id="create income">Создать доход</button>
+        <button class="btn btn-danger" id="create expense">Создать расход</button>
+    </div>
+    <div class="buttons-block-main d-flex align-items-center gap-3">
+        <button type="button" class="btn btn-outline-secondary" id="btn-today">Сегодня</button>
+        <button type="button" class="btn btn-outline-secondary" id="btn-week">Неделя</button>
+        <button type="button" class="btn btn-outline-secondary" id="btn-month">Месяц</button>
+        <button type="button" class="btn btn-outline-secondary" id="year">Год</button>
+        <button type="button" class="btn btn-outline-secondary" id="interval">Интервал</button>
+        <div class="interval">
+            <span>c</span>
+            <a href="javascript:void(0)" class="link-interval-start" id="link-interval-start">День</a>
+            <span>по</span>
+            <a href="javascript:void(0)" class="link-interval-end" id="link-interval-end">День</a>
         </div>
     </div>
-    <div class="alert-popup-block">
+    <div id="main-content"></div>
+</div>
+
+<div class="alert-popup-block">
     <div class="card alert-popup mx-auto my-auto">
         <div class="">
-        <span class="">Вы действительно хотите удалить категорию? </span>
-        <span class="text-popup-income" id="text-popup-income">Связанные доходы будут удалены навсегда.</span>
-        <div class="popup-button-block mt-3">
-            <button class="btn btn-success" id="popup-yes">Да, удалить</button>
-            <button class="btn btn-danger" id="popup-no">Не удалять</button>
+            <span class="">Вы действительно хотите удалить категорию? </span>
+            <span class="text-popup-income" id="text-popup-income">Связанные доходы будут удалены навсегда.</span>
+            <div class="popup-button-block mt-3">
+                <button class="btn btn-success" id="popup-yes">Да, удалить</button>
+                <button class="btn btn-danger" id="popup-no">Не удалять</button>
+            </div>
         </div>
     </div>
 </div>
-</div>
-<script src=" bootstrap/dist/js/bootstrap.bundle.min.js"  crossorigin="anonymous"></script>
-</body>
-</html>

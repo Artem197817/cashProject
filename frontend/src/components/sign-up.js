@@ -25,29 +25,35 @@ export class SignUp{
     async signUp() {
         this.commonErrorElement.style.display = 'none';
         if (this.validateForm()) {
+            const fullNameSplit = this.fullNamelement.value.split(' ');
+            let userName = 'unknown';
+            let userLastName = 'unknown';
+
+            if(fullNameSplit.length > 1) {
+                userLastName = fullNameSplit[0];
+                userName = fullNameSplit[1];
+            }else{
+
+            }
             const result = await HttpUtils.request('/signup', 'POST',
                 {
-                    fullName: this.fullNamelement.value,
+                    name: userName,
+                    lastName: userLastName,
                     email: this.emailElement.value,
                     password: this.passwordElement.value,
+                    passwordRepeat: this.repeatPassworElement.value,
                 })
 
-            // const result = await response.json();
 
-            if (result.error ||!result.response ||(result.response && !result.response.accessToken
-                || !result.response.refreshToken || !result.response.id || !result.response.name)) {
+
+            if (result.error ||!result.response ||(result.response && !result.response.user.id
+                || !result.response.user.email || !result.response.user.name || !result.response.user.lastName)) {
                 this.commonErrorElement.style.display = 'block';
                 return
             }
 
-            AuthUtil.setAuthInfo(result.response.accessToken, result.response.refreshToken,
-                {
-                    id: result.response.id,
-                    name: result.response.name
-                });
 
-
-            window.location.href = "#/";
+            window.location.href = "#/login";
         }
     }
 

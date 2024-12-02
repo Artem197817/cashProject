@@ -31,4 +31,26 @@ h1{
   .form-login{
     width: 397px;
   }
+
+}
+.content-container{
+  .cards{
+    .card{
+      max-width: 352px;
+      height: 121px;
+    }
+  }
+}
+
+@media screen and (max-width: 424px){
+  .box-login{
+    width: 295px;
+
+    .form-login{
+      width: 295px;
+    }
+    .register{
+      text-align: center;
+    }
+  }
 }
