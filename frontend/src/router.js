@@ -1,10 +1,10 @@
 import {Dashboard} from "./components/dashboard";
 import {Login} from "./components/login";
 import {SignUp} from "./components/sign-up";
-import {FreelancersList} from "./components/income/freelancers-list";
 import {Logout} from "./components/logout";
 import {AuthUtil} from "./utils/auth-util";
 import {Income} from "./components/income/income";
+import {Layout} from "./components/layout";
 
 export class Router {
 
@@ -92,7 +92,7 @@ export class Router {
                 useSecondLayout: false,
                 requiresAuth: true,
                 load: () => {
-
+                    new Layout();
                     new Income();
                 },
                 unload: () => {

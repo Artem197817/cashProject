@@ -20,10 +20,10 @@
 
     <div class="container-layout d-flex">
     <div class="d-flex flex-column flex-shrink-0 p-3 border-end" style="width: 219px; box-sizing: content-box; height: 100vh;">
-        <a href="/" class="d-flex align-items-center mb-3  text-decoration-none">
+        <a href="/" class="d-flex align-items-center mb-3  text-decoration-none border-bottom">
           <img src="../images/logo.png" alt="" class="logo-img ">
         </a>
-        <hr>
+
         <ul class="nav nav-pills flex-column mb-auto mt-4">
           <li class="nav-item ">
             <a href="#" class="nav-link  link-body-emphasis " aria-current="page">
@@ -38,7 +38,7 @@
             </a>
           </li>
           <li class="nav-item dropdown">
-            <a class="nav-link d-flex align-items-center " href="javascript:void(0)" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <a class="nav-link d-flex align-items-center " href="javascript:void(0)" id="navbarMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Категории
               <svg class="category-arrow" width="13" height="13"><use xlink:href="#chevron-right"/></svg>
             </a>
@@ -53,15 +53,16 @@
 
         
         <div class="">
-          <div class=""><b>Баланс:</b>  <span id="balance" class="text-primary">500$</span></div>
+          <div class="mb-3"><b>Баланс:</b>  <span id="balance" class="text-primary">500$</span></div>
 
-          <hr>
-          <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none " data-bs-toggle="dropdown" aria-expanded="false">
-            <img src="../images/people.png" alt="" width="32" height="32" class="rounded-circle me-2">
-            <div id="username" class="ml-2">Artem</div>
+
+          <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none border-top"  aria-expanded="false">
+            <img src="../images/people.png" alt="" width="32" height="32" class="rounded-circle me-2 mt-3">
+            <div id="username" class="ml-2 mt-3">Artem</div>
           </a>
           
         </div>
       </div>
         <div class="content" id="content-layout"></div>
     </div>
+

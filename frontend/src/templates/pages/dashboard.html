@@ -1,6 +1,14 @@
-DASHBOARD
 
-<a href="/login">login</a>
-<a href="/frontend/src/static">dashboard</a>
-<a href="/sign-up">sign-up</a>
-<a href="/404">404</a>
+<div class="content-container p-0 p-sm-3 m-3 m-sm-4 d-flex align-items-center justify-content-center flex-wrap">
+    <div class="income-container m-5 d-flex justify-content-center flex-column">
+        <h2 class="h2 text-center">Доходы</h2>
+        <div class="color-diag" id="color-diag-income"></div>
+        <canvas class="canvas" id="canvas-income"></canvas>
+    </div>
+
+    <div class="expenses-container m-5 d-flex justify-content-center flex-column align-items-center">
+        <h2 class="h2 text-center">Расходы</h2>
+        <div class="color-diag" id="color-diag-expenses"></div>
+        <canvas class="canvas" id="canvas-expenses"></canvas>
+    </div>
+</div>
