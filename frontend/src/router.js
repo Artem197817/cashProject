@@ -5,6 +5,7 @@ import {Logout} from "./components/logout";
 import {AuthUtil} from "./utils/auth-util";
 import {Income} from "./components/income/income";
 import {Layout} from "./components/layout";
+import {Expenses} from "./components/expenses/expenses";
 
 export class Router {
 
@@ -12,12 +13,8 @@ export class Router {
         this.pageTitleElement = document.getElementById("page-title");
         this.contentElement = document.getElementById("content");
         this.adminLteStyleElement = document.getElementById("adminlte_style");
-        this.profileElement = document.getElementById('profile');
-        this.profileUserName = document.getElementById('profile-user');
-        this.pageTitle = document.getElementById('page-title')
-        this.linkStyles = document.getElementById('styles');
 
-      //  this.initEvent();
+
         this.routes = [
             {
                 route: '#/',
@@ -102,6 +99,25 @@ export class Router {
                     'finance.css'
                 ]
             },
+            {
+                route: '#/expenses',
+                title: 'Расходы',
+                template: '/templates/pages/finance.html',
+                useLayout: '/templates/layout.html',
+                useSecondLayout: false,
+                requiresAuth: true,
+                load: () => {
+                    new Layout();
+                    new Expenses();
+                },
+                unload: () => {
+
+                },
+                styles: [
+                    'finance.css'
+                ]
+            },
+
 
         ];
     }

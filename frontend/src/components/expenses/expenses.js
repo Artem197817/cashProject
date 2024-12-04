@@ -1,10 +1,8 @@
 import {CardCreate} from "../../utils/card-create";
 
-
-export class Income {
-
-    tempIncomes = ['Зарплата', 'Подработка', 'Дивиденты', 'Проценты'];
-    mainTitle = 'Доходы'
+export class Expenses{
+    tempExpenses = ['Еда', 'Комуналка', 'Обучение', 'Платежи'];
+    mainTitle = 'Расходы'
 
     constructor() {
         this.mainTitleElement = document.getElementById('main-title');
@@ -15,26 +13,28 @@ export class Income {
         this.allertElement = document.getElementById('alert-popup-block');
         this.buttonAlertYes = document.getElementById('yes-alert');
         this.buttonAlertNo = document.getElementById('no-alert');
+        this.popupTextElement = document.getElementById('text-popup-income');
+        this.popupTextElement.style.color = 'white';
 
         this.createContent();
         this.buttonsEdit = document.querySelectorAll('.edit');
 
         this.buttonsEdit.forEach(item => {
-            item.addEventListener('click', this.editIncome.bind(this));
+            item.addEventListener('click', this.editExpenses.bind(this));
         })
         this.buttonsEdit = document.querySelectorAll('.delete');
 
         this.buttonsEdit.forEach(item => {
-            item.addEventListener('click', this.deleteIncome.bind(this));
+            item.addEventListener('click', this.deleteExpenses.bind(this));
         })
-        this.addIncomeElement = document.getElementById('add');
-        this.addIncomeElement.addEventListener('click', this.addIncome.bind(this));
+        this.addExpensesElement = document.getElementById('add');
+        this.addExpensesElement.addEventListener('click', this.addExpenses.bind(this));
 
     }
 
     createContent() {
         this.mainTitleElement.innerText = this.mainTitle;
-        this.tempIncomes.forEach(element => {
+        this.tempExpenses.forEach(element => {
             this.cardsElement.appendChild(CardCreate.cardCreateIncomesOrExpenses(element));
         });
 
@@ -46,19 +46,20 @@ export class Income {
 
     }
 
-    editIncome(event) {
-        console.log('Редактирование дохода:', event.target);
+    editExpenses(event) {
+        console.log('Редактирование :', event.target);
     }
 
-    deleteIncome(event) {
+    deleteExpenses(event) {
         this.allertElement.style.display = 'flex';
         this.buttonAlertNo.addEventListener('click', () => {
             this.allertElement.style.display = 'none';
         });
-        console.log('delete дохода:', event.target);
+        console.log('delete :', event.target);
     }
 
-    addIncome(event) {
+    addExpenses(event) {
         console.log('add', event.target);
-    }
+    } 
+    
 }
