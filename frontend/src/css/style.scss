@@ -41,6 +41,32 @@ h1{
     }
   }
 }
+.content{
+  width: 100vw;
+}
+.diag {
+  width: 360px;
+  .color-diag {
+    .color-block-info {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 5px;
+      span{
+        font-size: 14px;
+      }
+      .color-block {
+        width: 35px;
+        height: 10px;
+        margin-right: 5px;
+      }
+    }
+  }
+  .canvas{
+    width: 360px;
+  }
+}
+
 
 @media screen and (max-width: 424px){
   .box-login{
@@ -51,6 +77,12 @@ h1{
     }
     .register{
       text-align: center;
+    }
+  }
+  .diag {
+    width: 295px;
+    .canvas{
+      width: 295px;
     }
   }
 }

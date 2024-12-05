@@ -3,7 +3,23 @@ import {CardCreate} from "../../utils/card-create";
 
 export class Income {
 
-    tempIncomes = ['Зарплата', 'Подработка', 'Дивиденты', 'Проценты'];
+    tempIncomes = [ {
+        "id": 5,
+        "title": "Зарплата"
+    },
+        {
+        "id": 6,
+        "title": "Подработка"
+    },
+        {
+            "id": 7,
+            "title": "Дивиденты"
+        },
+        {
+            "id": 8,
+            "title": "Проценты"
+        },
+    ];
     mainTitle = 'Доходы'
 
     constructor() {
@@ -34,8 +50,10 @@ export class Income {
 
     createContent() {
         this.mainTitleElement.innerText = this.mainTitle;
+
         this.tempIncomes.forEach(element => {
-            this.cardsElement.appendChild(CardCreate.cardCreateIncomesOrExpenses(element));
+
+            this.cardsElement.appendChild(CardCreate.cardCreateIncomesOrExpenses(element.title));
         });
 
         this.cardAdd.innerHTML =

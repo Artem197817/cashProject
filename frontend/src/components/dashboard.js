@@ -1,5 +1,5 @@
 export class Dashboard {
-    data = [10, 14, 2, 12, 15, 16, 17, 4, 23];
+    mainTitle = ''
     colors = [
         "#FF5733",
         "#33FF57",
@@ -31,16 +31,63 @@ export class Dashboard {
         "#F08080",
         "#33FF8C",
     ];
+    tempIncomes = [{
+        "id": 5,
+        "title": "Зарплата",
+        "amount": 600
+    },
+        {
+            "id": 6,
+            "title": "Подработка",
+            "amount": 1200
+        },
+        {
+            "id": 7,
+            "title": "Дивиденты",
+            "amount": 200
+        },
+        {
+            "id": 8,
+            "title": "Проценты",
+            "amount": 300
+        },
+    ];
+    tempExpenses = [{
+        "id": 5,
+        "title": "Еда",
+        "amount": 400
+    },
+        {
+           "id": 6,
+            "title": "Комуналка",
+            "amount": 100
+        },
+        {
+            "id": 7,
+            "title": "Обучение",
+            "amount": 500
+        },
+        {
+            "id": 8,
+            "title": "Платежи",
+           "amount": 300
+        },
+    ];
+
 
     constructor() {
         this.canvasIncome = document.getElementById('canvas-income');
         this.canvasExpenses = document.getElementById('canvas-expenses');
         this.buttonsFin = document.getElementById('btn-block-fin');
         this.buttonsFin.style.display = 'none';
+        this.colorDiagIncomeElement = document.getElementById('color-diag-income')
+        this.colorDiagExpensesElement = document.getElementById('color-diag-expenses')
 
+        this.createColorDiag(this.tempIncomes, this.colorDiagIncomeElement);
+        this.createColorDiag(this.tempExpenses, this.colorDiagExpensesElement);
 
-        this.createCircleDiag(this.canvasIncome, this.data);
-        this.createCircleDiag(this.canvasExpenses, this.data);
+        this.createCircleDiag(this.canvasIncome, this.tempIncomes);
+        this.createCircleDiag(this.canvasExpenses, this.tempExpenses);
 
         window.addEventListener('resize', this.updateContainerWidth.bind(this));
     }
@@ -51,12 +98,12 @@ export class Dashboard {
         canvas.height = width * 2;
         const ctx = canvas.getContext('2d');
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        const total = data.reduce((sum, value) => sum + value, 0);
+        const total = data.reduce((sum, item) => sum + item.amount, 0);
 
         let startAngle = 0;
 
         data.forEach((value, index) => {
-            const sliceAngle = (value / total) * 2 * Math.PI; // Угол среза
+            const sliceAngle = (value.amount / total) * 2 * Math.PI; // Угол среза
             ctx.beginPath();
             ctx.moveTo(width, width); // Центр круга
             ctx.arc(width, width, width, startAngle, startAngle + sliceAngle);
@@ -72,9 +119,28 @@ export class Dashboard {
     }
 
     updateContainerWidth() {
-        this.createCircleDiag(this.canvasIncome, this.data);
-        this.createCircleDiag(this.canvasExpenses, this.data);
+        this.createCircleDiag(this.canvasIncome, this.tempIncomes);
+        this.createCircleDiag(this.canvasExpenses, this.tempExpenses);
     }
 
+    createColorDiag(listData, colorDiagElement) {
+        listData.forEach((element, index) => {
+            const colorBlockElement = document.createElement('div');
+            colorBlockElement.classList.add('color-block-info');
+            const spanElement = document.createElement('span');
+            spanElement.innerText = element.title;
+            const colorElement = document.createElement('div');
+            colorElement.classList.add('color-block');
+            if (index > this.colors.length - 1) {
+                index = 0;
+            }
+            colorElement.style.backgroundColor = this.colors[index];
+
+            colorBlockElement.appendChild(colorElement);
+            colorBlockElement.appendChild(spanElement);
+
+            colorDiagElement.appendChild(colorBlockElement);
+        })
+    }
 
 }
