@@ -1,4 +1,5 @@
 import {CardCreate} from "../../utils/card-create";
+import {LocalStorageUtil} from "../../utils/localStorageUtil";
 
 export class Expenses{
     tempExpenses = [ {
@@ -40,9 +41,9 @@ export class Expenses{
         this.buttonsEdit.forEach(item => {
             item.addEventListener('click', this.editExpenses.bind(this));
         })
-        this.buttonsEdit = document.querySelectorAll('.delete');
+        this.buttonsDelete = document.querySelectorAll('.delete');
 
-        this.buttonsEdit.forEach(item => {
+        this.buttonsDelete.forEach(item => {
             item.addEventListener('click', this.deleteExpenses.bind(this));
         })
         this.addExpensesElement = document.getElementById('add');
@@ -65,7 +66,14 @@ export class Expenses{
     }
 
     editExpenses(event) {
+        const cardBody = event.target.closest('.card-body');
+        const title = cardBody.querySelector('.card-title').innerText;
+        if(LocalStorageUtil.getCategory()){
+            LocalStorageUtil.removeCategory()
+        }
+        LocalStorageUtil.setCategory(title);
         console.log('Редактирование :', event.target);
+        window.location.href = '#/edit-category-expenses'
     }
 
     deleteExpenses(event) {
@@ -77,6 +85,7 @@ export class Expenses{
     }
 
     addExpenses(event) {
+        window.location.href = '#/create-category-expenses';
         console.log('add', event.target);
     } 
     

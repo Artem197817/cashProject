@@ -2,6 +2,8 @@ $font-family-base: 'Roboto', sans-serif;
 
 body {
   font-family: 'Roboto', sans-serif;
+  position: relative;
+
 }
 
 h1{
@@ -9,6 +11,8 @@ h1{
 }
 
 .sidebar {
+  position: relative;
+  left: 0;
   .image{
     i.fa{
       color: white;
@@ -33,19 +37,63 @@ h1{
   }
 
 }
-.content-container{
+.burger-menu{
+  display: none;
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  svg{
+    width: 50px;
+    height: 50px;
+  }
+}
+.buttons-block-main{
+  margin-right: 30px;
+}
+
+.close{
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: 190px;
+  svg{
+    width: 60px;
+    height: 60px;
+  }
+
+}
+.icon-logout{
+  position: absolute;
+  top: 30px;
+  right: 30px;
+
+  svg{
+    width: 40px;
+    height: auto;
+  }
+}
+
+.content-container {
+  margin-top: 100px;
+  margin-left: 60px;
+}
+.content-container-dashboard{
+  margin-top: 140px;
+  margin-left: 24px;
+}
+
   .cards{
     .card{
       max-width: 352px;
       height: 121px;
     }
   }
-}
+
 .content{
   width: 100vw;
 }
 .diag {
-  width: 360px;
+  width: 437px;
   .color-diag {
     .color-block-info {
       display: flex;
@@ -66,9 +114,56 @@ h1{
     width: 360px;
   }
 }
+.union{
+  margin-right: 10px;
+}
+
+@media screen and (max-width: 1025px){
+
+}
 
 
-@media screen and (max-width: 424px){
+
+@media screen and (max-width: 950px){
+  .income-container{
+    margin-right: 0;
+  }
+
+}
+@media screen and (max-width: 780px){
+  .diag {
+    width: 295px;
+    .canvas{
+      width: 295px;
+    }
+  }
+
+}
+@media screen and (max-width: 680px){
+  .sidebar{
+      position: fixed;
+      top: 0;
+      height: 500px;
+      transition: left 0.5s ease;
+      background: rgba(255, 255, 255, 0.9);
+      z-index: 10;
+    &.hidden{
+      left: -250px;
+    }
+    .close{
+      display: block;
+    }
+  }
+  .burger-menu{
+    display: block;
+  }
+  .content{
+    padding-top: 50px;
+  }
+}
+
+
+@media screen and (max-width: 467px){
   .box-login{
     width: 295px;
 
@@ -79,10 +174,31 @@ h1{
       text-align: center;
     }
   }
+  .content-container{
+    margin-left: 0;
+   padding-left: 15px;
+  }
+
+  .content-container-dashboard{
+    margin-left: 0;
+
+  }
   .diag {
     width: 295px;
     .canvas{
-      width: 295px;
+      width: 270px;
+    }
+  }
+  .cards {
+    margin-right: 15px;
+    margin-left: 15px;
+    .card {
+      padding: 0;
+      margin: 0;
+      .card-body{
+        padding-left: 5px;
+        padding-right: 5px;
+      }
     }
   }
 }

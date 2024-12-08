@@ -1,4 +1,5 @@
 import {CardCreate} from "../../utils/card-create";
+import {LocalStorageUtil} from "../../utils/localStorageUtil";
 
 
 export class Income {
@@ -38,9 +39,9 @@ export class Income {
         this.buttonsEdit.forEach(item => {
             item.addEventListener('click', this.editIncome.bind(this));
         })
-        this.buttonsEdit = document.querySelectorAll('.delete');
+        this.buttonsDelete = document.querySelectorAll('.delete');
 
-        this.buttonsEdit.forEach(item => {
+        this.buttonsDelete.forEach(item => {
             item.addEventListener('click', this.deleteIncome.bind(this));
         })
         this.addIncomeElement = document.getElementById('add');
@@ -65,7 +66,14 @@ export class Income {
     }
 
     editIncome(event) {
-        console.log('Редактирование дохода:', event.target);
+        const cardBody = event.target.closest('.card-body');
+        const title = cardBody.querySelector('.card-title').innerText;
+        if(LocalStorageUtil.getCategory()){
+            LocalStorageUtil.removeCategory()
+        }
+        LocalStorageUtil.setCategory(title);
+        console.log('Редактирование дохода:', title);
+        window.location.href = '#/edit-category-income'
     }
 
     deleteIncome(event) {
@@ -77,6 +85,7 @@ export class Income {
     }
 
     addIncome(event) {
+        window.location.href = '#/create-category-income';
         console.log('add', event.target);
     }
 }

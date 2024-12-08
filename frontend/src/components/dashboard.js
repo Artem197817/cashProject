@@ -1,5 +1,5 @@
 export class Dashboard {
-    mainTitle = ''
+    mainTitle = 'Главная'
     colors = [
         "#FF5733",
         "#33FF57",
@@ -76,6 +76,8 @@ export class Dashboard {
 
 
     constructor() {
+        this.mainTitleElement = document.getElementById('main-title');
+        this.mainTitleElement.innerText = this.mainTitle;
         this.canvasIncome = document.getElementById('canvas-income');
         this.canvasExpenses = document.getElementById('canvas-expenses');
         this.buttonsFin = document.getElementById('btn-block-fin');

@@ -6,6 +6,12 @@ import {AuthUtil} from "./utils/auth-util";
 import {Income} from "./components/income/income";
 import {Layout} from "./components/layout";
 import {Expenses} from "./components/expenses/expenses";
+import {CreateCategoryIncomes} from "./components/income/create-category-incomes";
+import {CreateCategoryExpenses} from "./components/expenses/create-category-expenses";
+import {EditCategoryIncomes} from "./components/income/edit-category-income";
+import {EditCategoryExpenses} from "./components/expenses/edit-category-expenses";
+import {IncomeAndExpenses} from "./components/income-expenses";
+import {CreateOperation} from "./components/create-operation";
 
 export class Router {
 
@@ -28,6 +34,7 @@ export class Router {
                     'finance.css',
                 ],
                 load: () => {
+                    new Layout();
                     new Dashboard();
                 }
 
@@ -117,8 +124,112 @@ export class Router {
                     'finance.css'
                 ]
             },
+            {
+                route: '#/create-category-income',
+                title: 'Создание категории доходов',
+                template: '/templates/pages/card-create.html',
+                useLayout: '/templates/layout.html',
+                useSecondLayout: false,
+                requiresAuth: true,
+                load: () => {
+                    new Layout();
+                    new CreateCategoryIncomes();
+                },
+                unload: () => {
 
+                },
+                styles: [
+                    'finance.css'
+                ]
+            },
+            {
+                route: '#/create-category-expenses',
+                title: 'Создание категории доходов',
+                template: '/templates/pages/card-create.html',
+                useLayout: '/templates/layout.html',
+                useSecondLayout: false,
+                requiresAuth: true,
+                load: () => {
+                    new Layout();
+                    new CreateCategoryExpenses();
+                },
+                unload: () => {
 
+                },
+                styles: [
+                    'finance.css'
+                ]
+            },
+            {
+                route: '#/edit-category-income',
+                title: 'Редактирование категории доходов',
+                template: '/templates/pages/card-create.html',
+                useLayout: '/templates/layout.html',
+                useSecondLayout: false,
+                requiresAuth: true,
+                load: () => {
+                    new Layout();
+                    new EditCategoryIncomes();
+                },
+                unload: () => {
+
+                },
+                styles: [
+                    'finance.css'
+                ]
+            },
+            {
+                route: '#/edit-category-expenses',
+                title: 'Редактирование категории расходов',
+                template: '/templates/pages/card-create.html',
+                useLayout: '/templates/layout.html',
+                useSecondLayout: false,
+                requiresAuth: true,
+                load: () => {
+                    new Layout();
+                    new EditCategoryExpenses();
+                },
+                unload: () => {
+
+                },
+                styles: [
+                    'finance.css'
+                ]
+            },
+            {
+                route: '#/income-and-expenses',
+                title: 'Расходы и доходы',
+                template: '/templates/pages/income-expenses.html',
+                useLayout: '/templates/layout.html',
+                useSecondLayout: '/templates/second-layout.html',
+                requiresAuth: true,
+                styles: [
+                    'layout.css',
+                    'finance.css',
+                ],
+                load: () => {
+                    new Layout();
+                    new IncomeAndExpenses();
+                }
+            },
+            {
+                route: '#/operation',
+                title: 'Создать доход/расход',
+                template: '/templates/pages/operation.html',
+                useLayout: '/templates/layout.html',
+                useSecondLayout: false,
+                requiresAuth: true,
+                load: () => {
+                    new Layout();
+                    new CreateOperation();
+                },
+                unload: () => {
+
+                },
+                styles: [
+                    'finance.css'
+                ]
+            },
         ];
     }
     async openRoute() {

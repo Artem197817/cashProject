@@ -8,13 +8,28 @@ export class Layout{
         this.userInfo = JSON.parse(AuthUtil.getAuthInfo(AuthUtil.userinfoKey));
         this.userName = this.userInfo.name + ' ' + this.userInfo.lastName;
         this.userInfoElement.innerText = this.userName;
-
+        this.asideElement = document.getElementById('aside');
         this.balanceElement = document.getElementById('balance');
         if(this.balance) {
             this.balanceElement.innerText = this.balance;
         }
+        this.burger = document.getElementById('burger-menu');
+        this.burger.addEventListener('click', () => {
+            this.asideElement.classList.remove('hidden')
+        })
+        this.close = document.getElementById('close-menu');
+        this.close.addEventListener('click', () => {
+            this.asideElement.classList.add('hidden')
+        })
+        // window.onload = this.adjustSidebar.bind(this);
+        // window.onresize = this.adjustSidebar.bind(this);
     }
 
+    adjustSidebar(){
 
+
+
+
+    }
 
 }
