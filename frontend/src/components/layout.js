@@ -15,14 +15,15 @@ export class Layout{
         }
         this.burger = document.getElementById('burger-menu');
         this.burger.addEventListener('click', () => {
-            this.asideElement.classList.remove('hidden')
+            this.asideElement.classList.remove('hidden');
+            this.asideElement.classList.remove('hidden-for-table');
         })
         this.close = document.getElementById('close-menu');
         this.close.addEventListener('click', () => {
-            this.asideElement.classList.add('hidden')
+            this.asideElement.classList.add('hidden');
+            this.asideElement.classList.add('hidden-for-table');
         })
-        // window.onload = this.adjustSidebar.bind(this);
-        // window.onresize = this.adjustSidebar.bind(this);
+
     }
 
     adjustSidebar(){
