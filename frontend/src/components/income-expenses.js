@@ -14,7 +14,9 @@ export class IncomeAndExpenses {
         this.asideElement = document.getElementById('aside');
         this.burger = document.getElementById('burger-menu');
         this.close = document.getElementById('close-menu');
-        console.log(this.close)
+        this.layoutOperationButton = document.getElementById('layout-operation');
+        this.layoutOperationButton.classList.add('active')
+
 
         //this.createContent();
         this.buttonsEdit = document.querySelectorAll('.pencil');

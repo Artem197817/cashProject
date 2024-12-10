@@ -15,6 +15,7 @@ h1 {
   position: relative;
   left: 0;
 
+
   .image {
     i.fa {
       color: white;
@@ -55,6 +56,12 @@ h1 {
 
 .buttons-block-main {
   margin-right: 30px;
+  .btn-outline-secondary{
+    &.active{
+      background: #6C757D;
+      color: #fff;
+    }
+  }
 }
 
 #close-menu {
@@ -161,6 +168,20 @@ h1 {
       color: #290661;
     }
   }
+}
+.nav-link {
+  color: #052C65;
+  font-size: 14px;
+}
+.nav-link:hover{
+  background-color: #0D6EFD;
+    color: white;
+    fill: white;
+}
+.active{
+  background-color: #0D6EFD;
+  color: white;
+  fill: white;
 }
 
 @media screen and (max-width: 1199px) {
@@ -310,6 +331,8 @@ h1 {
   .table {
     font-size: 9px;
   }
+
+
   .alert-popup-block {
     .alert-popup {
       padding: 5px;

@@ -24,6 +24,12 @@ export class Layout{
             this.asideElement.classList.add('hidden-for-table');
         })
 
+            this.linksMain = document.querySelectorAll('.main-link');
+            this.linksMain.forEach(button => {
+                button.classList.remove('active')
+                });
+
+
     }
 
     adjustSidebar(){

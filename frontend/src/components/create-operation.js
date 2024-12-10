@@ -9,6 +9,8 @@ tempCategoryList = ['Зарплата', 'Подработка', 'Дивиден�
         this.mainTitleElement = document.getElementById('main-title');
         this.mainTitleElement.innerText = this.mainTitle;
         this.categorySelectElement = document.getElementById('category-select');
+
+
         this.init();
 }
 

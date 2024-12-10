@@ -84,7 +84,10 @@ export class Dashboard {
         this.buttonsFin.style.display = 'none';
         this.colorDiagIncomeElement = document.getElementById('color-diag-income')
         this.colorDiagExpensesElement = document.getElementById('color-diag-expenses')
-
+        this.layoutMainButton = document.getElementById('layout-main');
+        this.layoutMainButton.classList.add('active')
+        
+        
         this.createColorDiag(this.tempIncomes, this.colorDiagIncomeElement);
         this.createColorDiag(this.tempExpenses, this.colorDiagExpensesElement);
 

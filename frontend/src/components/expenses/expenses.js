@@ -34,6 +34,11 @@ export class Expenses{
         this.buttonAlertNo = document.getElementById('no-alert');
         this.popupTextElement = document.getElementById('text-popup-income');
         this.popupTextElement.style.color = 'white';
+        this.layoutCategoryButton = document.getElementById('layout-category');
+        this.layoutCategoryButton .classList.add('active')
+        this.layoutExpensesButton = document.getElementById('layout-expenses');
+        this.layoutExpensesButton .classList.add('active')
+
 
         this.createContent();
         this.buttonsEdit = document.querySelectorAll('.edit');

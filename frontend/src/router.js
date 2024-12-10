@@ -12,6 +12,7 @@ import {EditCategoryIncomes} from "./components/income/edit-category-income";
 import {EditCategoryExpenses} from "./components/expenses/edit-category-expenses";
 import {IncomeAndExpenses} from "./components/income-expenses";
 import {CreateOperation} from "./components/create-operation";
+import {SecondLayout} from "./components/second-layout";
 
 export class Router {
 
@@ -35,6 +36,7 @@ export class Router {
                 ],
                 load: () => {
                     new Layout();
+                    new SecondLayout();
                     new Dashboard();
                 }
 
@@ -209,6 +211,7 @@ export class Router {
                 ],
                 load: () => {
                     new Layout();
+                    new SecondLayout();
                     new IncomeAndExpenses();
                 }
             },

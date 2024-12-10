@@ -43,7 +43,7 @@
 
 <div class="container-layout d-flex">
     <aside class="sidebar hidden d-flex flex-column flex-shrink-0 p-3 border-end "
-           style="width: 219px; box-sizing: content-box;height: 100vh" id="aside">
+           style="width: 219px; box-sizing: border-box;height: 100vh" id="aside">
         <div id="close-menu">
         <div class="close" id="close">
             <svg class="" width="60" height="60" >
@@ -55,9 +55,9 @@
             <img src="../images/logo.png" alt="" class="logo-img ">
         </a>
 
-        <ul class="nav nav-pills flex-column mb-auto mt-4">
+        <ul class="nav nav-pills flex-column mb-auto mt-4 fw-normal">
             <li class="nav-item ">
-                <a href="#/" class="nav-link  link-body-emphasis " aria-current="page">
+                <a href="#/" class="nav-link main-link" id="layout-main" aria-current="page">
                     <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#house"/>
                     </svg>
@@ -65,7 +65,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="#/income-and-expenses" class="nav-link link-body-emphasis">
+                <a href="#/income-and-expenses" class="nav-link main-link" id="layout-operation">
                     <svg class="bi pe-none me-2" width="16" height="16">
                         <use xlink:href="#cash-coin"/>
                     </svg>
@@ -73,7 +73,7 @@
                 </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link d-flex align-items-center " href="javascript:void(0)" id="navbarMenuLink"
+                <a class="nav-link d-flex align-items-center main-link" id="layout-category" href="javascript:void(0)" id="navbarMenuLink"
                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Категории
                     <svg class="category-arrow" width="13" height="13">
@@ -81,8 +81,8 @@
                     </svg>
                 </a>
                 <ul class="dropdown-menu dropdown-menu" aria-labelledby="navbarDarkDropdownMenuLink">
-                    <li><a class="dropdown-item" href="#/income">Доходы</a></li>
-                    <li><a class="dropdown-item" href="#/expenses">Расходы</a></li>
+                    <li><a class="dropdown-item main-link" id="layout-income" href="#/income">Доходы</a></li>
+                    <li><a class="dropdown-item main-link" id="layout-expenses" href="#/expenses">Расходы</a></li>
 
                 </ul>
             </li>

@@ -32,6 +32,10 @@ export class Income {
         this.allertElement = document.getElementById('alert-popup-block');
         this.buttonAlertYes = document.getElementById('yes-alert');
         this.buttonAlertNo = document.getElementById('no-alert');
+        this.layoutCategoryButton = document.getElementById('layout-category');
+        this.layoutCategoryButton .classList.add('active')
+        this.layoutIncomeButton = document.getElementById('layout-income');
+        this.layoutIncomeButton .classList.add('active')
 
         this.createContent();
         this.buttonsEdit = document.querySelectorAll('.edit');
