@@ -30,26 +30,27 @@
               d="M15.854 8.354a.5.5 0 0 0 0-.708l-3-3a.5.5 0 0 0-.708.708L14.293 7.5H5.5a.5.5 0 0 0 0 1h8.793l-2.147 2.146a.5.5 0 0 0 .708.708l3-3z"/>
     </symbol>
 </svg>
+
 <div class="burger-menu" id="burger-menu">
     <svg class="bi pe-none me-2" width="32" height="32">
         <use xlink:href="#burger"/>
     </svg>
 </div>
-<div class="icon-logout">
-    <svg class="bi pe-none me-2" width="32" height="32">
-        <use xlink:href="#logout"/>
-    </svg>
-</div>
+<!--<div class="icon-logout">-->
+<!--    <svg class="bi pe-none me-2" width="32" height="32">-->
+<!--        <use xlink:href="#logout"/>-->
+<!--    </svg>-->
+<!--</div>-->
 
 <div class="container-layout d-flex">
     <aside class="sidebar hidden d-flex flex-column flex-shrink-0 p-3 border-end "
            style="width: 219px; box-sizing: border-box;height: 100vh" id="aside">
         <div id="close-menu">
-        <div class="close" id="close">
-            <svg class="" width="60" height="60" >
-                <use xlink:href="#close"/>
-            </svg>
-        </div>
+            <div class="close" id="close">
+                <svg class="" width="60" height="60">
+                    <use xlink:href="#close"/>
+                </svg>
+            </div>
         </div>
         <a href="#/" class="d-flex align-items-center mb-3  text-decoration-none border-bottom">
             <img src="../images/logo.png" alt="" class="logo-img ">
@@ -73,7 +74,8 @@
                 </a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link d-flex align-items-center main-link" id="layout-category" href="javascript:void(0)" id="navbarMenuLink"
+                <a class="nav-link d-flex align-items-center main-link" id="layout-category" href="javascript:void(0)"
+                   id="navbarMenuLink"
                    role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Категории
                     <svg class="category-arrow" width="13" height="13">
@@ -93,13 +95,17 @@
         <div class="">
             <div class="mb-3"><b>Баланс:</b> <span id="balance" class="text-primary">500$</span></div>
 
-
-            <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none border-top"
-               aria-expanded="false">
-                <img src="../images/people.png" alt="" width="32" height="32" class="rounded-circle me-2 mt-3">
-                <div id="username" class="ml-2 mt-3">Artem</div>
-            </a>
-
+            <div class="user-info-block">
+                <div class="popup-user" id="popup-user">
+                    <a href="#/logout" class="popup-user-link">Выйти</a>
+                </div>
+                <a href="javascript:void(0)" id="sidebar-user-link"
+                   class="d-flex align-items-center link-body-emphasis text-decoration-none border-top "
+                   aria-expanded="false">
+                    <img src="../images/people.png" alt="" width="32" height="32" class="rounded-circle me-2 mt-3">
+                    <div id="username" class="ml-2 mt-3">Artem</div>
+                </a>
+            </div>
         </div>
     </aside>
     <div class="content" id="content-layout"></div>

@@ -35,7 +35,7 @@ export class SignUp{
             }else{
 
             }
-            const result = await HttpUtils.request('/signup', 'POST',
+            const result = await HttpUtils.request('/signup', 'POST', false,
                 {
                     name: userName,
                     lastName: userLastName,

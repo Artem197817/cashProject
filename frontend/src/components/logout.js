@@ -3,11 +3,10 @@ import {HttpUtils} from "../utils/http-utils";
 
 export class Logout {
 
-    constructor(openNewRoute) {
-        this.openNewRoute = openNewRoute;
+    constructor() {
 
         if (!AuthUtil.getAuthInfo(AuthUtil.accessTokenKey) && !AuthUtil.getAuthInfo(AuthUtil.refreshTokenKey)) {
-            return this.openNewRoute('/login');
+            window.location.href ='#/login';
         }
 
 
@@ -15,14 +14,14 @@ export class Logout {
     }
 
     async logout() {
-        await HttpUtils.request('/logout', 'POST',
+        await HttpUtils.request('/logout', 'POST', false,
             {
                 refreshToken: AuthUtil.getAuthInfo(AuthUtil.refreshTokenKey),
             })
 
         AuthUtil.removeAuthInfo();
 
-        this.openNewRoute('/login');
+        window.location.href = '#/login';
     }
 
 }

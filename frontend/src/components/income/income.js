@@ -1,26 +1,11 @@
 import {CardCreate} from "../../utils/card-create";
 import {LocalStorageUtil} from "../../utils/localStorageUtil";
+import {HttpUtils} from "../../utils/http-utils";
 
 
 export class Income {
+    url = '/categories/income';
 
-    tempIncomes = [ {
-        "id": 5,
-        "title": "Зарплата"
-    },
-        {
-        "id": 6,
-        "title": "Подработка"
-    },
-        {
-            "id": 7,
-            "title": "Дивиденты"
-        },
-        {
-            "id": 8,
-            "title": "Проценты"
-        },
-    ];
     mainTitle = 'Доходы'
 
     constructor() {
@@ -37,7 +22,24 @@ export class Income {
         this.layoutIncomeButton = document.getElementById('layout-income');
         this.layoutIncomeButton .classList.add('active')
 
-        this.createContent();
+        this.createContent().then();
+    }
+
+    async createContent() {
+        this.incomes = await this.getIncomes();
+        this.mainTitleElement.innerText = this.mainTitle;
+        this.incomes.forEach(element => {
+
+            this.cardsElement.appendChild(CardCreate.cardCreateIncomesOrExpenses(element.title));
+        });
+
+        this.cardAdd.innerHTML =
+            '            <div class="mx-auto my-auto">\n' +
+            '                <img src="../../images/plus.png" alt="+" class="plus">\n' +
+            '            </div>';
+        this.cardsElement.appendChild(this.cardAdd);
+        this.addIncomeElement = document.getElementById('add');
+        this.addIncomeElement.addEventListener('click', this.addIncome.bind(this));
         this.buttonsEdit = document.querySelectorAll('.edit');
 
         this.buttonsEdit.forEach(item => {
@@ -48,25 +50,15 @@ export class Income {
         this.buttonsDelete.forEach(item => {
             item.addEventListener('click', this.deleteIncome.bind(this));
         })
-        this.addIncomeElement = document.getElementById('add');
-        this.addIncomeElement.addEventListener('click', this.addIncome.bind(this));
 
     }
-
-    createContent() {
-        this.mainTitleElement.innerText = this.mainTitle;
-
-        this.tempIncomes.forEach(element => {
-
-            this.cardsElement.appendChild(CardCreate.cardCreateIncomesOrExpenses(element.title));
-        });
-
-        this.cardAdd.innerHTML =
-            '            <div class="mx-auto my-auto">\n' +
-            '                <img src="../../images/plus.png" alt="+" class="plus">\n' +
-            '            </div>';
-        this.cardsElement.appendChild(this.cardAdd);
-
+   async getIncomes() {
+        const result = await HttpUtils.request(this.url);
+        if(result.error) {
+            console.log(result.message)
+            return [];
+        }
+        return result.response;
     }
 
     editIncome(event) {

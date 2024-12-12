@@ -1,5 +1,8 @@
+import {HttpUtils} from "../../utils/http-utils";
+
 export class CreateCategoryExpenses {
 
+    url = '/categories/expense';
     mainTitle = "Создание категории расходов"
 
     constructor() {
@@ -13,7 +16,7 @@ export class CreateCategoryExpenses {
 
     }
 
-    validateInput(){
+    validateInput() {
         let isValid = true;
 
         if (this.inputCategory.value.trim()) {
@@ -22,12 +25,23 @@ export class CreateCategoryExpenses {
             this.inputCategory.classList.add('is-invalid');
             isValid = false;
         }
-            return isValid;
+        return isValid;
     }
 
-    createCategory(){
-        if(this.validateInput()){
-            console.log('create category');
+    async createCategory() {
+        if (this.validateInput()) {
+            const result = await HttpUtils.request(this.url, 'POST', true,
+                {
+                    title: this.inputCategory.value.trim()
+                });
+            if (result.error || !result.response) {
+                const inputErrorElement = document.getElementById('input-category-error');
+                inputErrorElement.innerText = 'Что-то пошло не так ' + result.message;
+                this.inputCategory.classList.add('is-invalid');
+            } else {
+                this.inputCategory.classList.remove('is-invalid');
+                window.location.href = '#/expenses'
+            }
         }
     }
 }

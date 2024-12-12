@@ -1,5 +1,8 @@
+import {HttpUtils} from "../../utils/http-utils";
+
 export class CreateCategoryIncomes {
 
+    url = '/categories/income'
     mainTitle = "Создание категории доходов"
 
     constructor() {
@@ -25,9 +28,20 @@ export class CreateCategoryIncomes {
             return isValid;
     }
 
-    createCategory(){
+   async createCategory(){
         if(this.validateInput()){
-            console.log('create category');
+          const result = await HttpUtils.request(this.url, 'POST',true,
+                {
+                    title: this.inputCategory.value.trim()
+                });
+            if(result.error||!result.response){
+              const  inputErrorElement = document.getElementById('input-category-error');
+              inputErrorElement.innerText = 'Что-то пошло не так ' + result.message;
+              this.inputCategory.classList.add('is-invalid');
+            }else{
+                this.inputCategory.classList.remove('is-invalid');
+                window.location.href = '#/income'
+            }
         }
     }
 }

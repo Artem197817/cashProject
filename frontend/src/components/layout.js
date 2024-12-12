@@ -10,8 +10,17 @@ export class Layout{
         this.userInfoElement.innerText = this.userName;
         this.asideElement = document.getElementById('aside');
         this.balanceElement = document.getElementById('balance');
+        this.popupUserElement = document.getElementById('popup-user');
+        this.sideBarUserElement = document.getElementById('sidebar-user-link');
+        this.sideBarUserElement.addEventListener('click',()=>{
+            this.popupUserElement.classList.toggle("active");
+            setTimeout(() => {
+                this.popupUserElement.classList.remove("active");
+            }, 3000);
+        });
+
         if(this.balance) {
-            this.balanceElement.innerText = this.balance;
+            this.balanceElement.innerText = this.balance + ' $';
         }
         this.burger = document.getElementById('burger-menu');
         this.burger.addEventListener('click', () => {

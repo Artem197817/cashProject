@@ -1,25 +1,9 @@
 import {CardCreate} from "../../utils/card-create";
 import {LocalStorageUtil} from "../../utils/localStorageUtil";
+import {HttpUtils} from "../../utils/http-utils";
 
 export class Expenses{
-    tempExpenses = [ {
-        "id": 5,
-        "title": "Еда"
-    },
-        {
-            "id": 6,
-            "title": "Комуналка"
-        },
-        {
-            "id": 7,
-            "title": "Обучение"
-        },
-        {
-            "id": 8,
-            "title": "Платежи"
-        },
-    ];
-
+    url = '/categories/expense';
 
     mainTitle = 'Расходы'
 
@@ -39,8 +23,23 @@ export class Expenses{
         this.layoutExpensesButton = document.getElementById('layout-expenses');
         this.layoutExpensesButton .classList.add('active')
 
+        this.createContent().then();
+    }
 
-        this.createContent();
+    async  createContent() {
+        this.expenses = await this.getExpenses();
+        this.mainTitleElement.innerText = this.mainTitle;
+        this.expenses.forEach(element => {
+            this.cardsElement.appendChild(CardCreate.cardCreateIncomesOrExpenses(element.title));
+        });
+
+        this.cardAdd.innerHTML =
+            '            <div class="mx-auto my-auto">\n' +
+            '                <img src="../../images/plus.png" alt="+" class="plus">\n' +
+            '            </div>';
+        this.cardsElement.appendChild(this.cardAdd);
+        this.addExpensesElement = document.getElementById('add');
+        this.addExpensesElement.addEventListener('click', this.addExpenses.bind(this));
         this.buttonsEdit = document.querySelectorAll('.edit');
 
         this.buttonsEdit.forEach(item => {
@@ -51,22 +50,15 @@ export class Expenses{
         this.buttonsDelete.forEach(item => {
             item.addEventListener('click', this.deleteExpenses.bind(this));
         })
-        this.addExpensesElement = document.getElementById('add');
-        this.addExpensesElement.addEventListener('click', this.addExpenses.bind(this));
-
     }
 
-    createContent() {
-        this.mainTitleElement.innerText = this.mainTitle;
-        this.tempExpenses.forEach(element => {
-            this.cardsElement.appendChild(CardCreate.cardCreateIncomesOrExpenses(element.title));
-        });
-
-        this.cardAdd.innerHTML =
-            '            <div class="mx-auto my-auto">\n' +
-            '                <img src="../../images/plus.png" alt="+" class="plus">\n' +
-            '            </div>';
-        this.cardsElement.appendChild(this.cardAdd);
+   async getExpenses() {
+            const result = await HttpUtils.request(this.url);
+            if(result.error) {
+                console.log(result.message)
+                return [];
+                           }
+            return result.response;
 
     }
 
