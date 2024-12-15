@@ -3,6 +3,7 @@ import {LocalStorageUtil} from "../../utils/localStorageUtil";
 import {HttpUtils} from "../../utils/http-utils";
 
 
+
 export class Income {
     url = '/categories/income';
 
@@ -29,8 +30,20 @@ export class Income {
         this.incomes = await this.getIncomes();
         this.mainTitleElement.innerText = this.mainTitle;
         this.incomes.forEach(element => {
+            const card = CardCreate.cardCreateIncomesOrExpenses(element.title);
+            const buttonDelete = card.querySelector('.delete')
+            buttonDelete.addEventListener('click', (event) =>{
+                event.stopPropagation();
+                this.deleteIncome(element.id);
+            });
+            const buttonEdit = card.querySelector('.edit')
+            buttonEdit.addEventListener('click', (event) =>{
+                event.stopPropagation();
+                this.editIncome(element);
+            });
 
-            this.cardsElement.appendChild(CardCreate.cardCreateIncomesOrExpenses(element.title));
+            this.cardsElement.appendChild(card);
+
         });
 
         this.cardAdd.innerHTML =
@@ -40,16 +53,6 @@ export class Income {
         this.cardsElement.appendChild(this.cardAdd);
         this.addIncomeElement = document.getElementById('add');
         this.addIncomeElement.addEventListener('click', this.addIncome.bind(this));
-        this.buttonsEdit = document.querySelectorAll('.edit');
-
-        this.buttonsEdit.forEach(item => {
-            item.addEventListener('click', this.editIncome.bind(this));
-        })
-        this.buttonsDelete = document.querySelectorAll('.delete');
-
-        this.buttonsDelete.forEach(item => {
-            item.addEventListener('click', this.deleteIncome.bind(this));
-        })
 
     }
    async getIncomes() {
@@ -61,27 +64,44 @@ export class Income {
         return result.response;
     }
 
-    editIncome(event) {
-        const cardBody = event.target.closest('.card-body');
-        const title = cardBody.querySelector('.card-title').innerText;
+    editIncome(element) {
+
         if(LocalStorageUtil.getCategory()){
             LocalStorageUtil.removeCategory()
         }
-        LocalStorageUtil.setCategory(title);
-        console.log('Редактирование дохода:', title);
+        LocalStorageUtil.setCategory(element);
         window.location.href = '#/edit-category-income'
     }
 
-    deleteIncome(event) {
-        this.allertElement.style.display = 'flex';
-        this.buttonAlertNo.addEventListener('click', () => {
-            this.allertElement.style.display = 'none';
-        });
-        console.log('delete дохода:', event.target);
+   async deleteIncome(id) {
+        const isConfirmed = await this.popupAlertBehaviour();
+        if (isConfirmed) {
+            const result = await HttpUtils.request(this.url + '/' + id, 'DELETE');
+            if (result.error) {
+                console.log(result.message)
+                return;
+            }
+            window.location.href = '#/income'
+        }
     }
 
-    addIncome(event) {
+    addIncome() {
         window.location.href = '#/create-category-income';
-        console.log('add', event.target);
+
+    }
+    popupAlertBehaviour() {
+        return new Promise((resolve) => {
+            this.allertElement.style.display = 'flex';
+
+            this.buttonAlertNo.addEventListener('click', () => {
+                this.allertElement.style.display = 'none';
+                resolve(false);
+            });
+
+            this.buttonAlertYes.addEventListener('click', () => {
+                this.allertElement.style.display = 'none';
+                resolve(true);
+            });
+        });
     }
 }

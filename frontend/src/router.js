@@ -13,6 +13,7 @@ import {EditCategoryExpenses} from "./components/expenses/edit-category-expenses
 import {IncomeAndExpenses} from "./components/income-expenses";
 import {CreateOperation} from "./components/create-operation";
 import {SecondLayout} from "./components/second-layout";
+import {EditOperation} from "./components/edit-operation";
 
 export class Router {
 
@@ -225,6 +226,24 @@ export class Router {
                 load: () => {
                     new Layout();
                     new CreateOperation();
+                },
+                unload: () => {
+
+                },
+                styles: [
+                    'finance.css'
+                ]
+            },
+            {
+                route: '#/operation-edit',
+                title: 'Создать доход/расход',
+                template: '/templates/pages/operation.html',
+                useLayout: '/templates/layout.html',
+                useSecondLayout: false,
+                requiresAuth: true,
+                load: () => {
+                    new Layout();
+                    new EditOperation();
                 },
                 unload: () => {
 

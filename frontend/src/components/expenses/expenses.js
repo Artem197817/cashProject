@@ -30,7 +30,20 @@ export class Expenses{
         this.expenses = await this.getExpenses();
         this.mainTitleElement.innerText = this.mainTitle;
         this.expenses.forEach(element => {
-            this.cardsElement.appendChild(CardCreate.cardCreateIncomesOrExpenses(element.title));
+            const card = CardCreate.cardCreateIncomesOrExpenses(element.title);
+            const buttonDelete = card.querySelector('.delete')
+            buttonDelete.addEventListener('click', (event) =>{
+                event.stopPropagation();
+                this.deleteExpenses(element.id);
+            });
+            const buttonEdit = card.querySelector('.edit')
+            buttonEdit.addEventListener('click', (event) =>{
+                event.stopPropagation();
+                this.editExpenses(element);
+            });
+
+            this.cardsElement.appendChild(card);
+
         });
 
         this.cardAdd.innerHTML =
@@ -40,16 +53,7 @@ export class Expenses{
         this.cardsElement.appendChild(this.cardAdd);
         this.addExpensesElement = document.getElementById('add');
         this.addExpensesElement.addEventListener('click', this.addExpenses.bind(this));
-        this.buttonsEdit = document.querySelectorAll('.edit');
 
-        this.buttonsEdit.forEach(item => {
-            item.addEventListener('click', this.editExpenses.bind(this));
-        })
-        this.buttonsDelete = document.querySelectorAll('.delete');
-
-        this.buttonsDelete.forEach(item => {
-            item.addEventListener('click', this.deleteExpenses.bind(this));
-        })
     }
 
    async getExpenses() {
@@ -62,28 +66,43 @@ export class Expenses{
 
     }
 
-    editExpenses(event) {
-        const cardBody = event.target.closest('.card-body');
-        const title = cardBody.querySelector('.card-title').innerText;
+    editExpenses(element) {
         if(LocalStorageUtil.getCategory()){
             LocalStorageUtil.removeCategory()
         }
-        LocalStorageUtil.setCategory(title);
-        console.log('Редактирование :', event.target);
+        LocalStorageUtil.setCategory(element);
         window.location.href = '#/edit-category-expenses'
     }
 
-    deleteExpenses(event) {
-        this.allertElement.style.display = 'flex';
-        this.buttonAlertNo.addEventListener('click', () => {
-            this.allertElement.style.display = 'none';
-        });
-        console.log('delete :', event.target);
+   async deleteExpenses(id) {
+        const isConfirmed = await this.popupAlertBehaviour();
+        if (isConfirmed) {
+            const result = await HttpUtils.request(this.url + '/' + id, 'DELETE');
+            if (result.error) {
+                console.log(result.message)
+                return;
+            }
+            window.location.href = '#/expenses'
+        }
     }
 
-    addExpenses(event) {
+    addExpenses() {
         window.location.href = '#/create-category-expenses';
-        console.log('add', event.target);
-    } 
-    
+    }
+
+    popupAlertBehaviour() {
+        return new Promise((resolve) => {
+            this.allertElement.style.display = 'flex';
+
+            this.buttonAlertNo.addEventListener('click', () => {
+                this.allertElement.style.display = 'none';
+                resolve(false);
+            });
+
+            this.buttonAlertYes.addEventListener('click', () => {
+                this.allertElement.style.display = 'none';
+                resolve(true);
+            });
+        });
+    }
 }
