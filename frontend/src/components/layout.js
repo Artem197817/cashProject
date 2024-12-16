@@ -1,15 +1,18 @@
 import {AuthUtil} from "../utils/auth-util";
+import {HttpUtils} from "../utils/http-utils";
 
 export class Layout{
 
-    balance = 4500;
+    static url = '/balance';
+
     constructor(){
         this.userInfoElement = document.getElementById('username');
         this.userInfo = JSON.parse(AuthUtil.getAuthInfo(AuthUtil.userinfoKey));
-        this.userName = this.userInfo.name + ' ' + this.userInfo.lastName;
-        this.userInfoElement.innerText = this.userName;
+        if(this.userInfo) {
+            this.userName = this.userInfo.name + ' ' + this.userInfo.lastName;
+            this.userInfoElement.innerText = this.userName;
+        }
         this.asideElement = document.getElementById('aside');
-        this.balanceElement = document.getElementById('balance');
         this.popupUserElement = document.getElementById('popup-user');
         this.sideBarUserElement = document.getElementById('sidebar-user-link');
         this.sideBarUserElement.addEventListener('click',()=>{
@@ -19,9 +22,8 @@ export class Layout{
             }, 3000);
         });
 
-        if(this.balance) {
-            this.balanceElement.innerText = this.balance + ' $';
-        }
+        Layout.setBalance().then();
+
         this.burger = document.getElementById('burger-menu');
         this.burger.addEventListener('click', () => {
             this.asideElement.classList.remove('hidden');
@@ -41,11 +43,20 @@ export class Layout{
 
     }
 
-    adjustSidebar(){
+    static async setBalance(){
+        const result = await HttpUtils.request(this.url);
+        if (result.error) {
+            console.log(result.message)
+            return;
+        }
 
-
-
-
+        if(result.response.balance) {
+            this.balanceElement = document.getElementById('balance');
+            if (this.balanceElement) {
+                this.balanceElement.innerText = result.response.balance + '  $';
+            }
+        }
+        return result.response;
     }
 
 }

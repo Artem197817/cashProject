@@ -1,24 +1,29 @@
 import {HttpUtils} from "../utils/http-utils";
+import {LocalStorageUtil} from "../utils/localStorageUtil";
 
-export class CreateOperation {
+export class EditOperation{
     urlIncome = '/categories/income'
     urlCreate = '/operations'
     urlExpense = '/categories/expense'
 
-    mainTitle = 'Создать доход/расход'
+    mainTitle = ' Редактировать доход/расход'
 
 
     constructor() {
         this.mainTitleElement = document.getElementById('main-title');
         this.mainTitleElement.innerText = this.mainTitle;
+        this.editOperation = LocalStorageUtil.getOperation();
         this.categorySelectElement = document.getElementById('category-select');
         this.inputTypeSelectElement = document.getElementById('type');
         this.sumElement = document.getElementById('summa');
         this.dateElement = document.getElementById('date');
         this.commentElement = document.getElementById('comment');
         this.buttonCreate = document.getElementById('button-create');
-        this.typeOperation = sessionStorage.getItem('type');
-        this.buttonCreate.addEventListener('click', this.createOperation.bind(this));
+        this.buttonCreate.innerText = 'Редактировать';
+        this.selectCategoryTitle = document.getElementById('category-select-title');
+        this.selectCategoryTitle.removeAttribute('selected')
+        this.typeOperation = this.editOperation.type;
+        this.buttonCreate.addEventListener('click', this.operationEdit.bind(this));
         this.selectIncomeOption = document.getElementById('select-income');
         this.selectExpenseOption = document.getElementById('select-expense');
         if(this.typeOperation === 'income'){
@@ -36,20 +41,28 @@ export class CreateOperation {
 
     async init() {
         this.categoryList = await this.getCategory();
-        if(this.categoryList) {
+        if(this.categoryList && this.editOperation) {
             this.categoryList.forEach(category => {
                 const optionElement = document.createElement('option');
                 optionElement.setAttribute('value', category.id);
                 optionElement.innerText = category.title;
+                if(category.title === this.editOperation.category){
+                    optionElement.setAttribute('selected', 'selected');
+                }
                 this.categorySelectElement.appendChild(optionElement);
             })
+            this.sumElement.value = this.editOperation.amount;
+            this.dateElement.value = this.editOperation.date;
+            this.commentElement.value = this.editOperation.comment;
+
         }
 
     }
 
-   async createOperation() {
+    async operationEdit() {
         if (this.validateForm()) {
-            const result = await HttpUtils.request(this.urlCreate, 'POST', true,{
+            const result = await HttpUtils.request(this.urlCreate + '/' + this.editOperation.id,
+                'PUT', true,{
                 type: this.inputTypeSelectElement.value,
                 amount: parseInt(this.sumElement.value),
                 date: this.dateElement.value,
@@ -104,7 +117,7 @@ export class CreateOperation {
     async getCategory() {
         let url = this.urlExpense;
         if(this.typeOperation === 'income'){
-           url = this.urlIncome;
+            url = this.urlIncome;
         }
         sessionStorage.removeItem('type');
 
@@ -117,5 +130,6 @@ export class CreateOperation {
 
         return result.response ;
     }
+
 
 }
