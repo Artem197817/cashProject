@@ -95,6 +95,7 @@ export class Dashboard {
         this.createCircleDiag(this.canvasExpenses, this.tempExpenses);
 
         window.addEventListener('resize', this.updateContainerWidth.bind(this));
+
     }
 
     createCircleDiag(canvas, data) {
@@ -146,6 +147,9 @@ export class Dashboard {
 
             colorDiagElement.appendChild(colorBlockElement);
         })
+    }
+    static updateDiag(period = 'all',dateFilterFrom = null,dateFilterTo=null){
+
     }
 
 }

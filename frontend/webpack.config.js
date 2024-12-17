@@ -24,6 +24,7 @@ module.exports = {
     }),
         new CopyPlugin({
             patterns: [
+                {from: './node_modules/vanilla-calendar-pro', to: 'vanilla-calendar-pro'},
                 { from: "./src/templates", to: "templates" },
                // { from: "./src/templates/pages", to: "templates" },
                 { from: "./src/css", to: "css" },

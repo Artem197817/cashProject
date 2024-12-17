@@ -41,8 +41,10 @@ export class IncomeAndExpenses {
 
     }
 
-    async createContent() {
-        const operations = await this.getOperations();
+    async createContent(operations = null) {
+        if(!operations) {
+            operations = await this.getOperations();
+        }
         if (operations) {
             operations.forEach(operation => {
 
@@ -120,13 +122,25 @@ export class IncomeAndExpenses {
         }
     }
 
-    async getOperations() {
-        const result = await HttpUtils.request(this.url);
+    async getOperations(period = 'all',dateFilterFrom = null,dateFilterTo=null ) {
+        const result = await HttpUtils.request(this.url + '?period=' + period
+            + '&dateFilterFrom=' + dateFilterFrom + '&dateFilterTo=' + dateFilterTo);
         if (result.error) {
             console.log(result.message)
             return [];
         }
-        return result.response;
+        return !result.response ? [] : result.response;
     }
+
+    static async updateTable(period = 'all',dateFilterFrom = null,dateFilterTo=null){
+
+        const incomeAndExpenses = new IncomeAndExpenses();
+        const tbodyElement = document.getElementById('tbody');
+        const operations = await incomeAndExpenses.getOperations(period, dateFilterFrom, dateFilterTo);
+      console.log(operations)
+       tbodyElement.innerHTML = '';
+       incomeAndExpenses.createContent(operations).then();
+   }
+
 
 }
