@@ -32,8 +32,7 @@ export class Router {
                 useSecondLayout: '/templates/second-layout.html',
                 requiresAuth: true,
                 styles: [
-                    'layout.css',
-                    'finance.css',
+
                 ],
                 load: () => {
                     new Layout();
@@ -64,7 +63,7 @@ export class Router {
                     document.body.style.height = 'auto';
                 },
                 styles: [
-                    // 'icheck-bootstrap.min.css'
+
                 ]
             },
             {
@@ -82,7 +81,7 @@ export class Router {
                     document.body.style.height = 'auto';
                 },
                 styles: [
-                    // 'icheck-bootstrap.min.css'
+
                 ]
             },
             {
@@ -106,7 +105,7 @@ export class Router {
 
                 },
                 styles: [
-                    'finance.css'
+
                 ]
             },
             {
@@ -124,7 +123,7 @@ export class Router {
 
                 },
                 styles: [
-                    'finance.css'
+
                 ]
             },
             {
@@ -142,7 +141,7 @@ export class Router {
 
                 },
                 styles: [
-                    'finance.css'
+
                 ]
             },
             {
@@ -160,7 +159,7 @@ export class Router {
 
                 },
                 styles: [
-                    'finance.css'
+
                 ]
             },
             {
@@ -178,7 +177,7 @@ export class Router {
 
                 },
                 styles: [
-                    'finance.css'
+
                 ]
             },
             {
@@ -196,7 +195,7 @@ export class Router {
 
                 },
                 styles: [
-                    'finance.css'
+
                 ]
             },
             {
@@ -207,8 +206,7 @@ export class Router {
                 useSecondLayout: '/templates/second-layout.html',
                 requiresAuth: true,
                 styles: [
-                    'layout.css',
-                    'finance.css',
+
                 ],
                 load: () => {
                     new Layout();
@@ -231,7 +229,7 @@ export class Router {
 
                 },
                 styles: [
-                    'finance.css'
+
                 ]
             },
             {
@@ -249,7 +247,7 @@ export class Router {
 
                 },
                 styles: [
-                    'finance.css'
+
                 ]
             },
         ];

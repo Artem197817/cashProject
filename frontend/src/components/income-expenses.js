@@ -124,7 +124,7 @@ export class IncomeAndExpenses {
 
     async getOperations(period = 'all',dateFilterFrom = null,dateFilterTo=null ) {
         const result = await HttpUtils.request(this.url + '?period=' + period
-            + '&dateFilterFrom=' + dateFilterFrom + '&dateFilterTo=' + dateFilterTo);
+            + '&dateFrom=' + dateFilterFrom + '&dateTo=' + dateFilterTo);
         if (result.error) {
             console.log(result.message)
             return [];
@@ -137,7 +137,6 @@ export class IncomeAndExpenses {
         const incomeAndExpenses = new IncomeAndExpenses();
         const tbodyElement = document.getElementById('tbody');
         const operations = await incomeAndExpenses.getOperations(period, dateFilterFrom, dateFilterTo);
-      console.log(operations)
        tbodyElement.innerHTML = '';
        incomeAndExpenses.createContent(operations).then();
    }

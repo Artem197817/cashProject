@@ -57,7 +57,7 @@ export class SecondLayout {
                         const pathname = window.location.href.split('/');
                         const page = pathname[pathname.length - 1];
                         if (page === 'income-and-expenses') {
-                            IncomeAndExpenses.updateTable('interval', arrDate[0], arrDate[1]);
+                            IncomeAndExpenses.updateTable('interval', arrDate[0], arrDate[1]).then();
                         } else {
                             Dashboard.updateDiag('interval', arrDate[0], arrDate[1]);
                         }
@@ -75,7 +75,7 @@ export class SecondLayout {
         const pathname = window.location.href.split('/');
         const page = pathname[pathname.length - 1];
         if (page === 'income-and-expenses') {
-            IncomeAndExpenses.updateTable(period, dateFilterFrom, dateFilterTo);
+            IncomeAndExpenses.updateTable(period, dateFilterFrom, dateFilterTo).then();
         } else {
             Dashboard.updateDiag(period, dateFilterFrom, dateFilterTo);
         }

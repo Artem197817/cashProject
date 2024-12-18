@@ -29,6 +29,26 @@ h1 {
   }
 }
 
+.logo-img{
+  margin-left: 32px;
+  margin-top: 32px;
+  margin-bottom: 4px;
+}
+.dropdown-menu{
+  width: 178px;
+  color: #0D6EFD;
+  border:1px solid #0D6EFD;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.dropdown-item:hover{
+  background-color: #0D6EFD;
+  color: white;
+}
+
+.category-arrow{
+  margin-left: 65px;
+}
 .box-login {
   margin: 0 auto;
   width: 397px;
@@ -43,7 +63,20 @@ h1 {
   }
 
 }
+.buttons-block-main{
+  margin-top: 40px;
+}
+.buttons-block-main .btn{
+  width: 100px;
 
+}
+.buttons-block-main a{
+  margin-left: 17px;
+  margin-right: 27px;
+}
+.text-popup-income{
+  color: white;
+}
 .burger-menu {
   display: none;
   position: absolute;
@@ -69,7 +102,7 @@ h1 {
 }
 
 .income-container {
-  border-bottom: 1px solid #6C757D;
+  border-right: 1px solid #6C757D;
 }
 
 
