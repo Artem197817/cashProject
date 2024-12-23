@@ -104,7 +104,14 @@ h1 {
 .income-container {
   border-right: 1px solid #6C757D;
 }
-
+#calendar{
+  position: relative;
+  .vc{
+    position: absolute;
+    top: 10px;
+    left: 20px;
+  }
+}
 
 #close-menu {
   display: none;

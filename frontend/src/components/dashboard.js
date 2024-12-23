@@ -1,3 +1,5 @@
+import {CalendarUtils} from "../utils/calendar";
+
 export class Dashboard {
     mainTitle = 'Главная'
     colors = [
@@ -75,7 +77,7 @@ export class Dashboard {
     ];
 
 
-    constructor() {
+    constructor(calendar) {
         this.mainTitleElement = document.getElementById('main-title');
         this.mainTitleElement.innerText = this.mainTitle;
         this.canvasIncome = document.getElementById('canvas-income');
@@ -86,8 +88,8 @@ export class Dashboard {
         this.colorDiagExpensesElement = document.getElementById('color-diag-expenses')
         this.layoutMainButton = document.getElementById('layout-main');
         this.layoutMainButton.classList.add('active')
-        
-        
+
+
         this.createColorDiag(this.tempIncomes, this.colorDiagIncomeElement);
         this.createColorDiag(this.tempExpenses, this.colorDiagExpensesElement);
 

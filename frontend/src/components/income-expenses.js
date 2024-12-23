@@ -8,7 +8,7 @@ export class IncomeAndExpenses {
 
     mainTitle = 'Доходы и расходы'
 
-    constructor() {
+    constructor(calendar) {
         this.mainTitleElement = document.getElementById('main-title');
         this.mainTitleElement.innerText = this.mainTitle;
         this.tbodyElement = document.getElementById('tbody');
