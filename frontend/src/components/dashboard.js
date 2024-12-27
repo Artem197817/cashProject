@@ -1,6 +1,9 @@
-import {CalendarUtils} from "../utils/calendar";
+import {Chart, registerables} from 'chart.js';
+Chart.register(...registerables);
+import {HttpUtils} from "../utils/http-utils";
 
 export class Dashboard {
+    url = '/operations'
     mainTitle = 'Главная'
     colors = [
         "#FF5733",
@@ -33,125 +36,141 @@ export class Dashboard {
         "#F08080",
         "#33FF8C",
     ];
-    tempIncomes = [{
-        "id": 5,
-        "title": "Зарплата",
-        "amount": 600
-    },
-        {
-            "id": 6,
-            "title": "Подработка",
-            "amount": 1200
-        },
-        {
-            "id": 7,
-            "title": "Дивиденты",
-            "amount": 200
-        },
-        {
-            "id": 8,
-            "title": "Проценты",
-            "amount": 300
-        },
-    ];
-    tempExpenses = [{
-        "id": 5,
-        "title": "Еда",
-        "amount": 400
-    },
-        {
-           "id": 6,
-            "title": "Комуналка",
-            "amount": 100
-        },
-        {
-            "id": 7,
-            "title": "Обучение",
-            "amount": 500
-        },
-        {
-            "id": 8,
-            "title": "Платежи",
-           "amount": 300
-        },
-    ];
 
-
-    constructor(calendar) {
+    constructor() {
         this.mainTitleElement = document.getElementById('main-title');
         this.mainTitleElement.innerText = this.mainTitle;
-        this.canvasIncome = document.getElementById('canvas-income');
-        this.canvasExpenses = document.getElementById('canvas-expenses');
+        this.canvasIncome = document.getElementById('canvas-income').getContext('2d');
+        this.canvasExpenses = document.getElementById('canvas-expenses').getContext('2d');
         this.buttonsFin = document.getElementById('btn-block-fin');
         this.buttonsFin.style.display = 'none';
-        this.colorDiagIncomeElement = document.getElementById('color-diag-income')
-        this.colorDiagExpensesElement = document.getElementById('color-diag-expenses')
         this.layoutMainButton = document.getElementById('layout-main');
         this.layoutMainButton.classList.add('active')
 
-
-        this.createColorDiag(this.tempIncomes, this.colorDiagIncomeElement);
-        this.createColorDiag(this.tempExpenses, this.colorDiagExpensesElement);
-
-        this.createCircleDiag(this.canvasIncome, this.tempIncomes);
-        this.createCircleDiag(this.canvasExpenses, this.tempExpenses);
-
-        window.addEventListener('resize', this.updateContainerWidth.bind(this));
-
+        this.createData().then();
     }
 
-    createCircleDiag(canvas, data) {
-        const width = canvas.clientWidth / 2;
-        canvas.width = width * 2;
-        canvas.height = width * 2;
-        const ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        const total = data.reduce((sum, item) => sum + item.amount, 0);
+    async createData(operations = null) {
+        if (!operations) {
+            operations = await this.getOperations();
+        }
+        if (operations) {
+            const expenses = operations.filter(item => item.type === 'expense');
+            const incomes = operations.filter(item => item.type === 'income');
 
-        let startAngle = 0;
+            function aggregateByCategory(items) {
+                return items.reduce((accumulator, current) => {
+                    const category = current.category;
+                    const amount = current.amount;
 
-        data.forEach((value, index) => {
-            const sliceAngle = (value.amount / total) * 2 * Math.PI; // Угол среза
-            ctx.beginPath();
-            ctx.moveTo(width, width); // Центр круга
-            ctx.arc(width, width, width, startAngle, startAngle + sliceAngle);
-            ctx.closePath();
-            if (index > this.colors.length - 1) {
-                index = 0;
+                    if (!accumulator[category]) {
+                        accumulator[category] = {category: category, total: 0};
+                    }
+
+                    accumulator[category].total += amount;
+
+                    return accumulator;
+                }, {});
             }
-            ctx.fillStyle = this.colors[index];
-            ctx.fill();
-            startAngle += sliceAngle;
-        });
 
-    }
+            const aggregatedExpenses = Object.values(aggregateByCategory(expenses));
+            const aggregatedIncomes = Object.values(aggregateByCategory(incomes));
 
-    updateContainerWidth() {
-        this.createCircleDiag(this.canvasIncome, this.tempIncomes);
-        this.createCircleDiag(this.canvasExpenses, this.tempExpenses);
-    }
+            this.dataIncome = {};
+            this.dataIncome.labels = [];
+            const labelIncome = 'Расходы';
+            let index = 0;
+            let incomeTotal = [];
+            let backgroundColorsI = [];
+            aggregatedIncomes.forEach(item => {
+                this.dataIncome.labels.push(item.category);
+                incomeTotal.push(item.total);
+                if (index > this.colors.length - 1) {
+                    index = 0;
+                }
+                backgroundColorsI.push(this.colors[index++]);
+            });
+            this.dataIncome.datasets = [{
+                label: labelIncome,
+                data: incomeTotal,
+                backgroundColor: backgroundColorsI,
+                borderColor: backgroundColorsI,
+            }]
 
-    createColorDiag(listData, colorDiagElement) {
-        listData.forEach((element, index) => {
-            const colorBlockElement = document.createElement('div');
-            colorBlockElement.classList.add('color-block-info');
-            const spanElement = document.createElement('span');
-            spanElement.innerText = element.title;
-            const colorElement = document.createElement('div');
-            colorElement.classList.add('color-block');
-            if (index > this.colors.length - 1) {
-                index = 0;
+            this.dataExpenses = {};
+            this.dataExpenses.labels = [];
+            const labelExpenses = 'Расходы';
+            index = 0;
+            let expensesTotal = [];
+            let backgroundColors = [];
+            aggregatedExpenses.forEach(item => {
+                this.dataExpenses.labels.push(item.category);
+                expensesTotal.push(item.total);
+                if (index > this.colors.length - 1) {
+                    index = 0;
+                }
+                backgroundColors.push(this.colors[index++]);
+            });
+            this.dataExpenses.datasets = [{
+                label: labelExpenses,
+                data: expensesTotal,
+                backgroundColor: backgroundColors,
+                borderColor: backgroundColors,
+            }]
+
+            if (Dashboard.chartIncome) {
+                Dashboard.chartIncome.destroy();
             }
-            colorElement.style.backgroundColor = this.colors[index];
+            if (Dashboard.chartExpenses) {
+                Dashboard.chartExpenses.destroy();
+            }
 
-            colorBlockElement.appendChild(colorElement);
-            colorBlockElement.appendChild(spanElement);
+            Dashboard.chartIncome = new Chart(this.canvasIncome, this.getConfig(this.dataIncome));
+            Dashboard.chartExpenses = new Chart(this.canvasExpenses, this.getConfig(this.dataExpenses));
 
-            colorDiagElement.appendChild(colorBlockElement);
-        })
+        }
     }
-    static updateDiag(period = 'all',dateFilterFrom = null,dateFilterTo=null){
 
+
+    async getOperations(period = 'all', dateFilterFrom = null, dateFilterTo = null) {
+        const result = await HttpUtils.request(this.url + '?period=' + period
+            + '&dateFrom=' + dateFilterFrom + '&dateTo=' + dateFilterTo);
+        if (result.error) {
+            console.log(result.message)
+            return [];
+        }
+        return !result.response ? [] : result.response;
+    }
+
+    static async updateDiag(period = 'all', dateFilterFrom = null, dateFilterTo = null) {
+
+        const dashboard = new Dashboard();
+        dashboard.updateDiagram(period, dateFilterFrom, dateFilterTo).then();
+    }
+
+    async updateDiagram(period = 'all', dateFilterFrom = null, dateFilterTo = null) {
+        console.log(Dashboard.chartIncome)
+        console.log(Dashboard.chartExpenses)
+
+        const operations = await this.getOperations(period, dateFilterFrom, dateFilterTo);
+        this.createData(operations).then();
+    }
+
+    getConfig(data) {
+
+        return {
+            type: 'pie',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+
+                }
+            },
+        };
     }
 
 }

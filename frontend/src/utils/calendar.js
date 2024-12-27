@@ -35,7 +35,7 @@ export class CalendarUtils {
                             if (page === 'income-and-expenses') {
                                 IncomeAndExpenses.updateTable('interval', arrDate[0], arrDate[1]).then();
                             } else {
-                                Dashboard.updateDiag('interval', arrDate[0], arrDate[1]);
+                                Dashboard.updateDiag('interval', arrDate[0], arrDate[1]).then();
                             }
                         }
                     }

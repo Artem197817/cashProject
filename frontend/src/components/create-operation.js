@@ -21,10 +21,10 @@ export class CreateOperation {
         this.buttonCreate.addEventListener('click', this.createOperation.bind(this));
         this.selectIncomeOption = document.getElementById('select-income');
         this.selectExpenseOption = document.getElementById('select-expense');
-        if(this.typeOperation === 'income'){
+        if (this.typeOperation === 'income') {
             this.selectExpenseOption.removeAttribute('selected')
             this.selectIncomeOption.setAttribute('selected', 'selected');
-        }else{
+        } else {
             this.selectIncomeOption.removeAttribute('selected')
             this.selectExpenseOption.setAttribute('selected', 'selected');
         }
@@ -36,7 +36,7 @@ export class CreateOperation {
 
     async init() {
         this.categoryList = await this.getCategory();
-        if(this.categoryList) {
+        if (this.categoryList) {
             this.categoryList.forEach(category => {
                 const optionElement = document.createElement('option');
                 optionElement.setAttribute('value', category.id);
@@ -47,9 +47,9 @@ export class CreateOperation {
 
     }
 
-   async createOperation() {
+    async createOperation() {
         if (this.validateForm()) {
-            const result = await HttpUtils.request(this.urlCreate, 'POST', true,{
+            const result = await HttpUtils.request(this.urlCreate, 'POST', true, {
                 type: this.inputTypeSelectElement.value,
                 amount: parseInt(this.sumElement.value),
                 date: this.dateElement.value,
@@ -103,8 +103,8 @@ export class CreateOperation {
 
     async getCategory() {
         let url = this.urlExpense;
-        if(this.typeOperation === 'income'){
-           url = this.urlIncome;
+        if (this.typeOperation === 'income') {
+            url = this.urlIncome;
         }
         sessionStorage.removeItem('type');
 
@@ -115,7 +115,7 @@ export class CreateOperation {
             return [];
         }
 
-        return result.response ;
+        return result.response;
     }
 
 }

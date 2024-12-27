@@ -53,7 +53,7 @@ export class CardCreate {
         const tdTypeElement = document.createElement('td');
         const tdAmountElement = document.createElement('td');
         tdTypeElement.classList.add('type');
-        if(operation.type === 'income') {
+        if (operation.type === 'income') {
             tdTypeElement.innerText = 'доход';
             tdTypeElement.classList.add('text-success');
             tdAmountElement.classList.add('text-success');

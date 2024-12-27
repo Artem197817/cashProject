@@ -1,12 +1,11 @@
 import {AuthUtil} from "../utils/auth-util";
 import {HttpUtils} from "../utils/http-utils";
 
-export class SignUp{
+export class SignUp {
 
     constructor(openNewRoute) {
-        this.openNewRoute = openNewRoute;
 
-        if(AuthUtil.getAuthInfo(AuthUtil.accessTokenKey)){
+        if (AuthUtil.getAuthInfo(AuthUtil.accessTokenKey)) {
             window.location.href = "#/";
         }
 
@@ -29,10 +28,10 @@ export class SignUp{
             let userName = 'unknown';
             let userLastName = 'unknown';
 
-            if(fullNameSplit.length > 1) {
+            if (fullNameSplit.length > 1) {
                 userLastName = fullNameSplit[0];
                 userName = fullNameSplit[1];
-            }else{
+            } else {
 
             }
             const result = await HttpUtils.request('/signup', 'POST', false,
@@ -43,16 +42,11 @@ export class SignUp{
                     password: this.passwordElement.value,
                     passwordRepeat: this.repeatPassworElement.value,
                 })
-
-
-
-            if (result.error ||!result.response ||(result.response && !result.response.user.id
+            if (result.error || !result.response || (result.response && !result.response.user.id
                 || !result.response.user.email || !result.response.user.name || !result.response.user.lastName)) {
                 this.commonErrorElement.style.display = 'block';
                 return
             }
-
-
             window.location.href = "#/login";
         }
     }
@@ -74,7 +68,7 @@ export class SignUp{
             isValid = false;
         }
 
-        if (this.passwordElement.value.trim() &&  /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(this.passwordElement.value)) {
+        if (this.passwordElement.value.trim() && /^(?=.*[a-zA-Z])(?=.*\d)[a-zA-Z\d]{6,}$/.test(this.passwordElement.value)) {
             this.passwordElement.classList.remove('is-invalid');
         } else {
             this.passwordElement.classList.add('is-invalid');

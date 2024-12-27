@@ -1,7 +1,7 @@
 import {HttpUtils} from "../utils/http-utils";
 import {LocalStorageUtil} from "../utils/localStorageUtil";
 
-export class EditOperation{
+export class EditOperation {
     urlIncome = '/categories/income'
     urlCreate = '/operations'
     urlExpense = '/categories/expense'
@@ -26,10 +26,10 @@ export class EditOperation{
         this.buttonCreate.addEventListener('click', this.operationEdit.bind(this));
         this.selectIncomeOption = document.getElementById('select-income');
         this.selectExpenseOption = document.getElementById('select-expense');
-        if(this.typeOperation === 'income'){
+        if (this.typeOperation === 'income') {
             this.selectExpenseOption.removeAttribute('selected')
             this.selectIncomeOption.setAttribute('selected', 'selected');
-        }else{
+        } else {
             this.selectIncomeOption.removeAttribute('selected')
             this.selectExpenseOption.setAttribute('selected', 'selected');
         }
@@ -42,12 +42,12 @@ export class EditOperation{
 
     async init() {
         this.categoryList = await this.getCategory();
-        if(this.categoryList && this.editOperation) {
+        if (this.categoryList && this.editOperation) {
             this.categoryList.forEach(category => {
                 const optionElement = document.createElement('option');
                 optionElement.setAttribute('value', category.id);
                 optionElement.innerText = category.title;
-                if(category.title === this.editOperation.category){
+                if (category.title === this.editOperation.category) {
                     optionElement.setAttribute('selected', 'selected');
                 }
                 this.categorySelectElement.appendChild(optionElement);
@@ -63,13 +63,13 @@ export class EditOperation{
     async operationEdit() {
         if (this.validateForm()) {
             const result = await HttpUtils.request(this.urlCreate + '/' + this.editOperation.id,
-                'PUT', true,{
-                type: this.inputTypeSelectElement.value,
-                amount: parseInt(this.sumElement.value),
-                date: this.dateElement.value,
-                comment: this.commentElement.value,
-                category_id: parseInt(this.categorySelectElement.value)
-            });
+                'PUT', true, {
+                    type: this.inputTypeSelectElement.value,
+                    amount: parseInt(this.sumElement.value),
+                    date: this.dateElement.value,
+                    comment: this.commentElement.value,
+                    category_id: parseInt(this.categorySelectElement.value)
+                });
             window.location.href = '#/income-and-expenses'
         }
     }
@@ -117,7 +117,7 @@ export class EditOperation{
 
     async getCategory() {
         let url = this.urlExpense;
-        if(this.typeOperation === 'income'){
+        if (this.typeOperation === 'income') {
             url = this.urlIncome;
         }
         sessionStorage.removeItem('type');
@@ -129,7 +129,7 @@ export class EditOperation{
             return [];
         }
 
-        return result.response ;
+        return result.response;
     }
 
 

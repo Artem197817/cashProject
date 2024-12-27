@@ -6,7 +6,7 @@ export class Logout {
     constructor() {
 
         if (!AuthUtil.getAuthInfo(AuthUtil.accessTokenKey) && !AuthUtil.getAuthInfo(AuthUtil.refreshTokenKey)) {
-            window.location.href ='#/login';
+            window.location.href = '#/login';
         }
 
 

@@ -3,10 +3,9 @@ import {LocalStorageUtil} from "../../utils/localStorageUtil";
 import {HttpUtils} from "../../utils/http-utils";
 
 
-
 export class Income {
     url = '/categories/income';
-
+    urlOperations = '/operations'
     mainTitle = 'Доходы'
 
     constructor() {
@@ -19,9 +18,9 @@ export class Income {
         this.buttonAlertYes = document.getElementById('yes-alert');
         this.buttonAlertNo = document.getElementById('no-alert');
         this.layoutCategoryButton = document.getElementById('layout-category');
-        this.layoutCategoryButton .classList.add('active')
+        this.layoutCategoryButton.classList.add('active')
         this.layoutIncomeButton = document.getElementById('layout-income');
-        this.layoutIncomeButton .classList.add('active')
+        this.layoutIncomeButton.classList.add('active')
 
         this.createContent().then();
     }
@@ -32,12 +31,12 @@ export class Income {
         this.incomes.forEach(element => {
             const card = CardCreate.cardCreateIncomesOrExpenses(element.title);
             const buttonDelete = card.querySelector('.delete')
-            buttonDelete.addEventListener('click', (event) =>{
+            buttonDelete.addEventListener('click', (event) => {
                 event.stopPropagation();
-                this.deleteIncome(element.id);
+                this.deleteIncome(element);
             });
             const buttonEdit = card.querySelector('.edit')
-            buttonEdit.addEventListener('click', (event) =>{
+            buttonEdit.addEventListener('click', (event) => {
                 event.stopPropagation();
                 this.editIncome(element);
             });
@@ -55,9 +54,10 @@ export class Income {
         this.addIncomeElement.addEventListener('click', this.addIncome.bind(this));
 
     }
-   async getIncomes() {
+
+    async getIncomes() {
         const result = await HttpUtils.request(this.url);
-        if(result.error) {
+        if (result.error) {
             console.log(result.message)
             return [];
         }
@@ -66,17 +66,26 @@ export class Income {
 
     editIncome(element) {
 
-        if(LocalStorageUtil.getCategory()){
+        if (LocalStorageUtil.getCategory()) {
             LocalStorageUtil.removeCategory()
         }
         LocalStorageUtil.setCategory(element);
         window.location.href = '#/edit-category-income'
     }
 
-   async deleteIncome(id) {
+
+    async deleteIncome(element) {
         const isConfirmed = await this.popupAlertBehaviour();
         if (isConfirmed) {
-            const result = await HttpUtils.request(this.url + '/' + id, 'DELETE');
+            const operations = await this.getOperations();
+            if (operations.length > 0) {
+                operations.forEach(operation => {
+                    if (operation.category === element.title) {
+                        this.deleteOperation(operation.id);
+                    }
+                });
+            }
+            const result = await HttpUtils.request(this.url + '/' + element.id, 'DELETE');
             if (result.error) {
                 console.log(result.message)
                 return;
@@ -85,10 +94,27 @@ export class Income {
         }
     }
 
+    async getOperations(period = 'all') {
+        const result = await HttpUtils.request(this.urlOperations + '?period=' + period);
+        if (result.error) {
+            console.log(result.message)
+            return [];
+        }
+        return !result.response ? [] : result.response;
+    }
+
+    async deleteOperation(id) {
+        const result = await HttpUtils.request(this.urlOperations + '/' + id, 'DELETE');
+        if (result.error) {
+            console.log(result.message)
+        }
+    }
+
     addIncome() {
         window.location.href = '#/create-category-income';
 
     }
+
     popupAlertBehaviour() {
         return new Promise((resolve) => {
             this.allertElement.style.display = 'flex';

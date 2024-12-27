@@ -15,13 +15,11 @@ import {CreateOperation} from "./components/create-operation";
 import {SecondLayout} from "./components/second-layout";
 import {EditOperation} from "./components/edit-operation";
 import {CalendarUtils} from "./utils/calendar";
-import {Calendar} from 'vanilla-calendar-pro';
 
 export class Router {
 
 
     constructor() {
-       // this.currentRoute = null;
         this.pageTitleElement = document.getElementById("page-title");
         this.contentElement = document.getElementById("content");
         this.adminLteStyleElement = document.getElementById("adminlte_style");
@@ -35,9 +33,7 @@ export class Router {
                 useLayout: '/templates/layout.html',
                 useSecondLayout: '/templates/second-layout.html',
                 requiresAuth: true,
-                styles: [
-
-                ],
+                styles: [],
                 load: () => {
                     new Layout();
                     new SecondLayout();
@@ -45,9 +41,9 @@ export class Router {
                     new Dashboard(this.calendar);
                 },
                 unload: () => {
-                    if(this.calendar){
-                    this.calendar.destroy();
-                  }
+                    if (this.calendar) {
+                        this.calendar.destroy();
+                    }
                 },
 
             },
@@ -55,7 +51,7 @@ export class Router {
                 route: '#/404',
                 title: 'Page Not Found',
                 useLayout: false,
-                useSecondLayout:false,
+                useSecondLayout: false,
                 template: '/templates/pages/404.html',
             },
             {
@@ -71,9 +67,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-
-                ]
+                styles: []
             },
             {
                 route: '#/sign-up',
@@ -89,14 +83,12 @@ export class Router {
                     document.body.classList.remove('register-page');
                     document.body.style.height = 'auto';
                 },
-                styles: [
-
-                ]
+                styles: []
             },
             {
-            route: '#/logout',
+                route: '#/logout',
                 load: () => {
-                new Logout();
+                    new Logout();
                 }
             },
             {
@@ -113,9 +105,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-
-                ]
+                styles: []
             },
             {
                 route: '#/expenses',
@@ -131,9 +121,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-
-                ]
+                styles: []
             },
             {
                 route: '#/create-category-income',
@@ -149,9 +137,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-
-                ]
+                styles: []
             },
             {
                 route: '#/create-category-expenses',
@@ -167,9 +153,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-
-                ]
+                styles: []
             },
             {
                 route: '#/edit-category-income',
@@ -185,9 +169,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-
-                ]
+                styles: []
             },
             {
                 route: '#/edit-category-expenses',
@@ -203,9 +185,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-
-                ]
+                styles: []
             },
             {
                 route: '#/income-and-expenses',
@@ -214,9 +194,7 @@ export class Router {
                 useLayout: '/templates/layout.html',
                 useSecondLayout: '/templates/second-layout.html',
                 requiresAuth: true,
-                styles: [
-
-                ],
+                styles: [],
                 load: () => {
                     new Layout();
                     new SecondLayout();
@@ -224,7 +202,7 @@ export class Router {
                     new IncomeAndExpenses(this.calendar);
                 },
                 unload: () => {
-                    if(this.calendar){
+                    if (this.calendar) {
                         this.calendar.destroy();
                     }
                 },
@@ -243,9 +221,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-
-                ]
+                styles: []
             },
             {
                 route: '#/operation-edit',
@@ -261,12 +237,11 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-
-                ]
+                styles: []
             },
         ];
     }
+
     async openRoute() {
 
         const urlRoute = window.location.hash.split('?')[0];
@@ -280,10 +255,9 @@ export class Router {
             window.location.href = '#/login';
             return;
         }
-        const oldRoute =  this.currentRoute;
+        const oldRoute = this.currentRoute;
 
         if (oldRoute && oldRoute.unload && typeof oldRoute.unload === 'function') {
-            console.log('Calling unload for route:', oldRoute.route);
             oldRoute.unload();
         }
         try {
@@ -312,7 +286,7 @@ export class Router {
 
                 contentBlock.innerHTML = await layoutResponse.text();
                 contentBlock = document.getElementById('content-layout');
-                if(route.useSecondLayout) {
+                if (route.useSecondLayout) {
                     const layoutResponse = await fetch(route.useSecondLayout);
                     if (!layoutResponse.ok) throw new Error('Failed to load layout');
 
@@ -349,7 +323,6 @@ export class Router {
                     }
                 });
 
-                // Вызываем функцию unload, если она определена
                 if (currentRoute.unload && typeof currentRoute.unload === 'function') {
                     currentRoute.unload();
                 }

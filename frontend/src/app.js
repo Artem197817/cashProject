@@ -1,10 +1,10 @@
 import "./css/style.scss";
 import {Router} from "./router.js";
 
-class App{
+class App {
 
-    constructor(){
-      this.router =  new Router();
+    constructor() {
+        this.router = new Router();
         window.addEventListener('DOMContentLoaded', () => {
             this.router.openRoute();
         });
@@ -13,4 +13,5 @@ class App{
         });
     }
 }
+
 (new App());
