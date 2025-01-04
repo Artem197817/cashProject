@@ -8,7 +8,7 @@ export class IncomeAndExpenses {
 
     mainTitle = 'Доходы и расходы'
 
-    constructor() {
+    constructor(calendar) {
         this.mainTitleElement = document.getElementById('main-title');
         this.mainTitleElement.innerText = this.mainTitle;
         this.tbodyElement = document.getElementById('tbody');
@@ -35,14 +35,16 @@ export class IncomeAndExpenses {
 
         this.createContent().then();
 
-
         window.onload = this.sidebarBehaviour.bind(this);
         window.onresize = this.sidebarBehaviour.bind(this);
 
     }
 
-    async createContent() {
-        const operations = await this.getOperations();
+    async createContent(operations = null) {
+        if (!operations) {
+            operations = await this.getOperations();
+
+        }
         if (operations) {
             operations.forEach(operation => {
 
@@ -72,6 +74,7 @@ export class IncomeAndExpenses {
             this.asideElement.classList.remove('hidden-for-table');
             this.burger.style.display = 'none';
             this.close.style.display = 'none';
+
         } else {
             this.asideElement.classList.add('for-table');
             this.asideElement.classList.add('hidden-for-table');
@@ -82,7 +85,7 @@ export class IncomeAndExpenses {
     }
 
     editOperation(operation) {
-        if(LocalStorageUtil.getOperation()){
+        if (LocalStorageUtil.getOperation()) {
             LocalStorageUtil.removeOperation()
         }
         LocalStorageUtil.setOperation(operation);
@@ -120,13 +123,24 @@ export class IncomeAndExpenses {
         }
     }
 
-    async getOperations() {
-        const result = await HttpUtils.request(this.url);
+    async getOperations(period = 'all', dateFilterFrom = null, dateFilterTo = null) {
+        const result = await HttpUtils.request(this.url + '?period=' + period
+            + '&dateFrom=' + dateFilterFrom + '&dateTo=' + dateFilterTo);
         if (result.error) {
             console.log(result.message)
             return [];
         }
-        return result.response;
+        return !result.response ? [] : result.response;
     }
+
+    static async updateTable(period = 'all', dateFilterFrom = null, dateFilterTo = null) {
+
+        const incomeAndExpenses = new IncomeAndExpenses();
+        const tbodyElement = document.getElementById('tbody');
+        const operations = await incomeAndExpenses.getOperations(period, dateFilterFrom, dateFilterTo);
+        tbodyElement.innerHTML = '';
+        incomeAndExpenses.createContent(operations).then();
+    }
+
 
 }

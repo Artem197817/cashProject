@@ -24,20 +24,15 @@ module.exports = {
     }),
         new CopyPlugin({
             patterns: [
-                { from: "./src/templates", to: "templates" },
-               // { from: "./src/templates/pages", to: "templates" },
-                { from: "./src/css", to: "css" },
-                // { from: "./node_modules/admin-lte/plugins/fontawesome-free/webfonts", to: "webfonts" },
-                // { from: "./node_modules/admin-lte/plugins/fontawesome-free/css/all.css", to: "css" },
-                // { from: "./node_modules/admin-lte/dist/css/adminlte.min.css", to: "css" },
-                { from: "./node_modules/bootstrap/dist/css/bootstrap.min.css", to: "css" },
-                // { from: "./node_modules/admin-lte//plugins/icheck-bootstrap/icheck-bootstrap.min.css", to: "css" },
-                // { from: "./node_modules/admin-lte/dist/js/adminlte.min.js", to: "js" },
-                { from: "./node_modules/jquery/dist/jquery.min.js", to: "js" },
-                { from: "./node_modules/bootstrap/dist/js/bootstrap.bundle.js", to: "js" },
-            //     { from: "static/fonts", to: "fonts" },
-                { from: "./src/static/images", to: "images" },
-             ],
+                {from: './node_modules/vanilla-calendar-pro', to: 'vanilla-calendar-pro'},
+                {from: './node_modules/chart.js', to: 'chart.js'},
+                {from: "./src/templates", to: "templates"},
+                {from: "./src/css", to: "css"},
+                {from: "./node_modules/bootstrap/dist/css/bootstrap.min.css", to: "css"},
+                {from: "./node_modules/jquery/dist/jquery.min.js", to: "js"},
+                {from: "./node_modules/bootstrap/dist/js/bootstrap.bundle.js", to: "js"},
+                {from: "./src/static/images", to: "images"},
+            ],
         }),
     ],
     module: {
@@ -50,7 +45,6 @@ module.exports = {
                     {
                         loader: "sass-loader",
                         options: {
-                            // Prefer `dart-sass`, even if `sass-embedded` is available
                             implementation: require("sass"),
                         },
                     },

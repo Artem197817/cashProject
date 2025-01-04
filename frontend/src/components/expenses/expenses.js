@@ -2,9 +2,9 @@ import {CardCreate} from "../../utils/card-create";
 import {LocalStorageUtil} from "../../utils/localStorageUtil";
 import {HttpUtils} from "../../utils/http-utils";
 
-export class Expenses{
+export class Expenses {
     url = '/categories/expense';
-
+    urlOperations = '/operations'
     mainTitle = 'Расходы'
 
     constructor() {
@@ -19,25 +19,25 @@ export class Expenses{
         this.popupTextElement = document.getElementById('text-popup-income');
         this.popupTextElement.style.color = 'white';
         this.layoutCategoryButton = document.getElementById('layout-category');
-        this.layoutCategoryButton .classList.add('active')
+        this.layoutCategoryButton.classList.add('active')
         this.layoutExpensesButton = document.getElementById('layout-expenses');
-        this.layoutExpensesButton .classList.add('active')
+        this.layoutExpensesButton.classList.add('active')
 
         this.createContent().then();
     }
 
-    async  createContent() {
+    async createContent() {
         this.expenses = await this.getExpenses();
         this.mainTitleElement.innerText = this.mainTitle;
         this.expenses.forEach(element => {
             const card = CardCreate.cardCreateIncomesOrExpenses(element.title);
             const buttonDelete = card.querySelector('.delete')
-            buttonDelete.addEventListener('click', (event) =>{
+            buttonDelete.addEventListener('click', (event) => {
                 event.stopPropagation();
-                this.deleteExpenses(element.id);
+                this.deleteExpenses(element);
             });
             const buttonEdit = card.querySelector('.edit')
-            buttonEdit.addEventListener('click', (event) =>{
+            buttonEdit.addEventListener('click', (event) => {
                 event.stopPropagation();
                 this.editExpenses(element);
             });
@@ -56,33 +56,57 @@ export class Expenses{
 
     }
 
-   async getExpenses() {
-            const result = await HttpUtils.request(this.url);
-            if(result.error) {
-                console.log(result.message)
-                return [];
-                           }
-            return result.response;
+    async getExpenses() {
+        const result = await HttpUtils.request(this.url);
+        if (result.error) {
+            console.log(result.message)
+            return [];
+        }
+        return result.response;
 
     }
 
     editExpenses(element) {
-        if(LocalStorageUtil.getCategory()){
+        if (LocalStorageUtil.getCategory()) {
             LocalStorageUtil.removeCategory()
         }
         LocalStorageUtil.setCategory(element);
         window.location.href = '#/edit-category-expenses'
     }
 
-   async deleteExpenses(id) {
+    async deleteExpenses(element) {
         const isConfirmed = await this.popupAlertBehaviour();
         if (isConfirmed) {
-            const result = await HttpUtils.request(this.url + '/' + id, 'DELETE');
+            const operations = await this.getOperations();
+            if (operations.length > 0) {
+                operations.forEach(operation => {
+                    if (operation.category === element.title) {
+                        this.deleteOperation(operation.id);
+                    }
+                });
+            }
+            const result = await HttpUtils.request(this.url + '/' + element.id, 'DELETE');
             if (result.error) {
                 console.log(result.message)
                 return;
             }
             window.location.href = '#/expenses'
+        }
+    }
+
+    async getOperations(period = 'all') {
+        const result = await HttpUtils.request(this.urlOperations + '?period=' + period);
+        if (result.error) {
+            console.log(result.message)
+            return [];
+        }
+        return !result.response ? [] : result.response;
+    }
+
+    async deleteOperation(id) {
+        const result = await HttpUtils.request(this.urlOperations + '/' + id, 'DELETE');
+        if (result.error) {
+            console.log(result.message)
         }
     }
 

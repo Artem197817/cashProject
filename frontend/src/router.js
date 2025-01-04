@@ -14,8 +14,10 @@ import {IncomeAndExpenses} from "./components/income-expenses";
 import {CreateOperation} from "./components/create-operation";
 import {SecondLayout} from "./components/second-layout";
 import {EditOperation} from "./components/edit-operation";
+import {CalendarUtils} from "./utils/calendar";
 
 export class Router {
+
 
     constructor() {
         this.pageTitleElement = document.getElementById("page-title");
@@ -31,22 +33,25 @@ export class Router {
                 useLayout: '/templates/layout.html',
                 useSecondLayout: '/templates/second-layout.html',
                 requiresAuth: true,
-                styles: [
-                    'layout.css',
-                    'finance.css',
-                ],
+                styles: [],
                 load: () => {
                     new Layout();
                     new SecondLayout();
-                    new Dashboard();
-                }
+                    this.calendar = new CalendarUtils().calendar;
+                    new Dashboard(this.calendar);
+                },
+                unload: () => {
+                    if (this.calendar) {
+                        this.calendar.destroy();
+                    }
+                },
 
             },
             {
                 route: '#/404',
                 title: 'Page Not Found',
                 useLayout: false,
-                useSecondLayout:false,
+                useSecondLayout: false,
                 template: '/templates/pages/404.html',
             },
             {
@@ -60,12 +65,9 @@ export class Router {
                     new Login(this.openNewRoute.bind(this));
                 },
                 unload: () => {
-                    document.body.classList.remove('login-page');
-                    document.body.style.height = 'auto';
+
                 },
-                styles: [
-                    // 'icheck-bootstrap.min.css'
-                ]
+                styles: []
             },
             {
                 route: '#/sign-up',
@@ -81,14 +83,12 @@ export class Router {
                     document.body.classList.remove('register-page');
                     document.body.style.height = 'auto';
                 },
-                styles: [
-                    // 'icheck-bootstrap.min.css'
-                ]
+                styles: []
             },
             {
-            route: '#/logout',
+                route: '#/logout',
                 load: () => {
-                new Logout();
+                    new Logout();
                 }
             },
             {
@@ -105,9 +105,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-                    'finance.css'
-                ]
+                styles: []
             },
             {
                 route: '#/expenses',
@@ -123,9 +121,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-                    'finance.css'
-                ]
+                styles: []
             },
             {
                 route: '#/create-category-income',
@@ -141,9 +137,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-                    'finance.css'
-                ]
+                styles: []
             },
             {
                 route: '#/create-category-expenses',
@@ -159,9 +153,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-                    'finance.css'
-                ]
+                styles: []
             },
             {
                 route: '#/edit-category-income',
@@ -177,9 +169,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-                    'finance.css'
-                ]
+                styles: []
             },
             {
                 route: '#/edit-category-expenses',
@@ -195,9 +185,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-                    'finance.css'
-                ]
+                styles: []
             },
             {
                 route: '#/income-and-expenses',
@@ -206,15 +194,18 @@ export class Router {
                 useLayout: '/templates/layout.html',
                 useSecondLayout: '/templates/second-layout.html',
                 requiresAuth: true,
-                styles: [
-                    'layout.css',
-                    'finance.css',
-                ],
+                styles: [],
                 load: () => {
                     new Layout();
                     new SecondLayout();
-                    new IncomeAndExpenses();
-                }
+                    this.calendar = new CalendarUtils().calendar;
+                    new IncomeAndExpenses(this.calendar);
+                },
+                unload: () => {
+                    if (this.calendar) {
+                        this.calendar.destroy();
+                    }
+                },
             },
             {
                 route: '#/operation',
@@ -230,9 +221,7 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-                    'finance.css'
-                ]
+                styles: []
             },
             {
                 route: '#/operation-edit',
@@ -248,13 +237,13 @@ export class Router {
                 unload: () => {
 
                 },
-                styles: [
-                    'finance.css'
-                ]
+                styles: []
             },
         ];
     }
+
     async openRoute() {
+
         const urlRoute = window.location.hash.split('?')[0];
         const newRoute = this.routes.find(item => item.route === urlRoute);
 
@@ -263,11 +252,16 @@ export class Router {
             return;
         }
         if (newRoute.requiresAuth && !AuthUtil.getAuthInfo(AuthUtil.accessTokenKey)) {
-            window.location.href = '#/login'; // Перенаправляем на страницу логина
+            window.location.href = '#/login';
             return;
         }
+        const oldRoute = this.currentRoute;
 
+        if (oldRoute && oldRoute.unload && typeof oldRoute.unload === 'function') {
+            oldRoute.unload();
+        }
         try {
+
             await this.loadTemplate(newRoute);
             this.applyStyles(newRoute.styles);
             this.pageTitleElement.innerText = newRoute.title;
@@ -279,6 +273,7 @@ export class Router {
             console.error('Error opening route:', error);
             location.href = '#/404';
         }
+        this.currentRoute = newRoute;
     }
 
     async loadTemplate(route) {
@@ -291,7 +286,7 @@ export class Router {
 
                 contentBlock.innerHTML = await layoutResponse.text();
                 contentBlock = document.getElementById('content-layout');
-                if(route.useSecondLayout) {
+                if (route.useSecondLayout) {
                     const layoutResponse = await fetch(route.useSecondLayout);
                     if (!layoutResponse.ok) throw new Error('Failed to load layout');
 
@@ -300,7 +295,7 @@ export class Router {
                 }
             } catch (error) {
                 console.error('Error loading layout:', error);
-                throw error; // Пробрасываем ошибку дальше
+                throw error;
             }
         }
 
@@ -311,12 +306,12 @@ export class Router {
             contentBlock.innerHTML = await templateResponse.text();
         } catch (error) {
             console.error('Error loading template:', error);
-            throw error; // Пробрасываем ошибку дальше
+            throw error;
         }
     }
 
     async activateRoute(e, oldRoute = null) {
-        // Удаление стилей текущего маршрута, если он существует
+
         if (oldRoute) {
             const currentRoute = this.routes.find(item => item.route === oldRoute);
 
@@ -324,34 +319,28 @@ export class Router {
                 currentRoute.styles.forEach(style => {
                     const styleLink = document.querySelector(`link[href='/css/${style}']`);
                     if (styleLink) {
-                        styleLink.remove(); // Удаляем стиль, если он существует
+                        styleLink.remove();
                     }
                 });
 
-                // Вызываем функцию unload, если она определена
                 if (currentRoute.unload && typeof currentRoute.unload === 'function') {
                     currentRoute.unload();
                 }
             }
         }
 
-        // Получаем новый маршрут из URL
         const urlRoute = window.location.hash.split('?')[0];
         const newRoute = this.routes.find(item => item.route === urlRoute);
 
         if (newRoute) {
-            // Добавляем новые стили
             this.applyStyles(newRoute.styles);
 
-            // Обновляем заголовок страницы
             if (newRoute.title) {
                 this.pageTitleElement.innerText = newRoute.title;
             }
 
-            // Загружаем шаблон
             await this.loadTemplate(newRoute);
 
-            // Вызываем функцию load, если она определена
             if (newRoute.load && typeof newRoute.load === 'function') {
                 newRoute.load();
             }
@@ -371,7 +360,6 @@ export class Router {
                     link.rel = "stylesheet";
                     link.href = '/css/' + style;
 
-                    // Обработка ошибок при загрузке стиля
                     link.onerror = () => {
                         console.error(`Failed to load stylesheet: ${link.href}`);
                     };

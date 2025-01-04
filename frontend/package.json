@@ -16,8 +16,10 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "chart.js": "^4.4.7",
     "http-server": "^14.1.1",
-    "jquery": "^3.7.1"
+    "jquery": "^3.7.1",
+    "vanilla-calendar-pro": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",

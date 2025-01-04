@@ -16,7 +16,7 @@ export class CreateCategoryIncomes {
 
     }
 
-    validateInput(){
+    validateInput() {
         let isValid = true;
 
         if (this.inputCategory.value.trim()) {
@@ -25,20 +25,20 @@ export class CreateCategoryIncomes {
             this.inputCategory.classList.add('is-invalid');
             isValid = false;
         }
-            return isValid;
+        return isValid;
     }
 
-   async createCategory(){
-        if(this.validateInput()){
-          const result = await HttpUtils.request(this.url, 'POST',true,
+    async createCategory() {
+        if (this.validateInput()) {
+            const result = await HttpUtils.request(this.url, 'POST', true,
                 {
                     title: this.inputCategory.value.trim()
                 });
-            if(result.error||!result.response){
-              const  inputErrorElement = document.getElementById('input-category-error');
-              inputErrorElement.innerText = 'Что-то пошло не так ' + result.message;
-              this.inputCategory.classList.add('is-invalid');
-            }else{
+            if (result.error || !result.response) {
+                const inputErrorElement = document.getElementById('input-category-error');
+                inputErrorElement.innerText = 'Что-то пошло не так ' + result.message;
+                this.inputCategory.classList.add('is-invalid');
+            } else {
                 this.inputCategory.classList.remove('is-invalid');
                 window.location.href = '#/income'
             }

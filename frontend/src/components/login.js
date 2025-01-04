@@ -4,9 +4,8 @@ import {HttpUtils} from "../utils/http-utils";
 export class Login {
 
     constructor(openNewRoute) {
-        this.openNewRoute = openNewRoute;
 
-        if(AuthUtil.getAuthInfo(AuthUtil.accessTokenKey)){
+        if (AuthUtil.getAuthInfo(AuthUtil.accessTokenKey)) {
             window.location.href = "#/";
         }
 
@@ -49,8 +48,7 @@ export class Login {
                 })
 
 
-
-            if (result.error ||!result.response ||(result.response && !result.response.tokens.accessToken
+            if (result.error || !result.response || (result.response && !result.response.tokens.accessToken
                 || !result.response.tokens.refreshToken || !result.response.user)) {
                 this.commonErrorElement.style.display = 'block';
                 return
